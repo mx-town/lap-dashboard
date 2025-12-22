@@ -1,13 +1,14 @@
 # Mechatronik Lexikon - LAP Fachgespräch
 
-Eine interaktive Website zur Vorbereitung auf das Fachgespräch der Lehrabschlussprüfung (LAP) für Mechatroniker.
+Eine interaktive Next.js Website zur Vorbereitung auf das Fachgespräch der Lehrabschlussprüfung (LAP) für Mechatroniker.
 
 ## Features
 
-- **10 Hauptkategorien** mit detaillierten Unterkategorien
-- **Suchfunktion** zum schnellen Finden von Begriffen
-- **Responsive Design** für Desktop, Tablet und Handy
-- **Moderne Benutzeroberfläche** mit klarer Navigation
+- **10 Hauptkategorien** mit detaillierten Begriffen
+- **Fuzzy-Search** mit Fuse.js zum schnellen Finden
+- **Animationen** mit Framer Motion
+- **Responsive Design** für alle Geräte
+- **Dunkles Design** mit lila/blauen Gradienten
 
 ## Hauptkategorien
 
@@ -24,65 +25,67 @@ Eine interaktive Website zur Vorbereitung auf das Fachgespräch der Lehrabschlus
 | 9 | Regelungs-/Steuerungstechnik/SPS | Andreas |
 | 10 | Netzsysteme | Offen |
 
-## Verwendung
+## Installation
 
-1. Öffne `index.html` in einem Browser
-2. Wähle eine Kategorie aus der Sidebar oder den Karten
-3. Nutze die Suche (Strg+K) zum schnellen Finden
+```bash
+# Dependencies installieren
+npm install
 
-## Struktur
-
-```
-lap-dashboard/
-├── index.html          # Hauptseite
-├── css/
-│   └── style.css       # Styling
-├── js/
-│   ├── data.js         # Daten und Inhalte
-│   └── app.js          # App-Logik
-├── images/             # Bilder für die Erklärungen
-└── README.md
+# Entwicklungsserver starten
+npm run dev
 ```
 
-## Inhalte hinzufügen
+Dann öffne [http://localhost:3000](http://localhost:3000) im Browser.
 
-Um neue Inhalte hinzuzufügen, bearbeite `js/data.js`:
+## Projekt Struktur
 
-1. Finde die passende Kategorie in `lexikonData.categories`
-2. Füge eine neue Unterkategorie in das `subcategories`-Array ein:
+```
+mechatronik-lexikon/
+├── app/
+│   ├── layout.tsx      # Root Layout
+│   ├── page.tsx        # Hauptseite
+│   └── globals.css     # Global Styles
+├── components/ui/      # UI Komponenten
+├── data/
+│   └── terms.ts        # Alle Begriffe und Kategorien
+├── lib/
+│   └── utils.ts        # Hilfsfunktionen
+└── public/images/      # Bilder
+```
 
-```javascript
+## Begriffe hinzufügen
+
+Bearbeite `data/terms.ts`:
+
+```typescript
 {
-    id: "mein-thema",
-    name: "Mein Thema",
-    icon: "📌",
-    description: "Kurze Beschreibung",
-    content: `
-        <h2>Titel</h2>
-        <p>Erklärung...</p>
-    `,
-    images: []
+  id: "mein-begriff",
+  title: "Mein Begriff",
+  image: "/images/mein-bild.png",
+  description: "Ausführliche Beschreibung...",
+  example: "Praktische Beispiele",
+  category: "schutzkonzepte", // Kategorie-ID
 }
 ```
 
-## Bilder hinzufügen
+## Deployment
 
-1. Lege Bilder in den `images/` Ordner
-2. Referenziere sie im Content:
-
-```html
-<div class="image-container">
-    <img src="images/mein-bild.png" alt="Beschreibung">
-    <p class="image-caption">Bildunterschrift</p>
-</div>
+```bash
+# Für statisches Hosting (GitHub Pages, Netlify)
+npm run build
 ```
 
-## Hosting
+Die Dateien landen im `out/` Ordner.
 
-Die Website kann einfach gehostet werden:
-- **GitHub Pages**: Repository auf GitHub pushen, Pages aktivieren
-- **Lokaler Server**: `python -m http.server 8000` im Projektordner
-- **Netlify/Vercel**: Repository verbinden
+## Tech Stack
+
+- Next.js 14
+- React 18
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- Fuse.js
+- Radix UI
 
 ## Lizenz
 
