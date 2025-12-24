@@ -417,14 +417,6 @@ export const terms: Term[] = [
     category: "halbleitertechnik",
   },
   {
-    id: "operationsverstaerker",
-    title: "Operationsverstärker",
-    image: "/images/placeholder.png",
-    description: "Platzhalter: Der Operationsverstärker (OPV) ist ein hochverstärkender Differenzverstärker mit zwei Eingängen (invertierend, nicht-invertierend) und einem Ausgang. Ideal für Verstärkung, Filter, Komparatoren. Typ: LM741, LM358.",
-    example: "Platzhalter: Verstärker, Schmitt-Trigger, Integrator",
-    category: "halbleitertechnik",
-  },
-  {
     id: "ic-ic-sockel",
     title: "IC / IC-Sockel",
     image: "/images/placeholder.png",
