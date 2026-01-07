@@ -1,26 +1,30 @@
 "use client"
 
 import { useState, useEffect, useRef, useMemo } from "react"
-import { Search, ChevronDown, X } from "lucide-react"
+import { Search, ChevronRight, X, ArrowLeft, Home } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import Fuse from "fuse.js"
 import { motion, AnimatePresence } from "framer-motion"
-import { terms, categories, type Term } from "@/data/terms"
+import { terms, categories, subcategories, type Term } from "@/data/terms"
+
+type ViewState = "categories" | "subcategories" | "terms"
 
 export default function MechatronikLexikon() {
   const [searchTerm, setSearchTerm] = useState("")
-  const [collapsedCategories, setCollapsedCategories] = useState<Set<string>>(new Set())
+  const [viewState, setViewState] = useState<ViewState>("categories")
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null)
   const [selectedTerm, setSelectedTerm] = useState<Term | null>(null)
   const [isSticky, setIsSticky] = useState(false)
   const controlsRef = useRef<HTMLDivElement>(null)
   const controlsPlaceholderRef = useRef<HTMLDivElement>(null)
 
-  // Fuse.js Setup für Fuzzy Search
+  // Fuse.js Setup für Fuzzy Search (inkl. Subcategories)
   const fuse = useMemo(() => {
     return new Fuse(terms, {
-      keys: ["title", "description", "example"],
+      keys: ["title", "description", "example", "subcategory"],
       threshold: 0.3,
       includeScore: true,
     })
@@ -32,24 +36,41 @@ export default function MechatronikLexikon() {
     return fuse.search(searchTerm).map(result => result.item)
   }, [searchTerm, fuse])
 
-  const toggleCategory = (categoryId: string) => {
-    const newCollapsed = new Set(collapsedCategories)
-    if (newCollapsed.has(categoryId)) {
-      newCollapsed.delete(categoryId)
-    } else {
-      newCollapsed.add(categoryId)
-    }
-    setCollapsedCategories(newCollapsed)
+  // Navigation
+  const handleCategoryClick = (categoryId: string) => {
+    setSelectedCategory(categoryId)
+    setSelectedSubcategory(null)
+    setViewState("subcategories")
   }
 
-  const toggleAllCategories = () => {
-    if (collapsedCategories.size === Object.keys(categories).length) {
-      setCollapsedCategories(new Set())
-    } else {
-      setCollapsedCategories(new Set(Object.keys(categories)))
-    }
+  const handleSubcategoryClick = (subcategoryId: string) => {
+    setSelectedSubcategory(subcategoryId)
+    setViewState("terms")
   }
 
+  const handleBackToCategories = () => {
+    setViewState("categories")
+    setSelectedCategory(null)
+    setSelectedSubcategory(null)
+  }
+
+  const handleBackToSubcategories = () => {
+    setViewState("subcategories")
+    setSelectedSubcategory(null)
+  }
+
+  const handleTermClick = (term: Term) => {
+    setSelectedTerm(term)
+  }
+
+  const clearSearch = () => {
+    setSearchTerm("")
+    setViewState("categories")
+    setSelectedCategory(null)
+    setSelectedSubcategory(null)
+  }
+
+  // Sticky Header
   useEffect(() => {
     const handleScroll = () => {
       if (controlsRef.current && controlsPlaceholderRef.current) {
@@ -61,182 +82,288 @@ export default function MechatronikLexikon() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  const clearSearch = () => setSearchTerm("")
-  const handleTermClick = (term: Term) => setSelectedTerm(term)
+  // Get current category and subcategory data
+  const currentCategory = selectedCategory ? categories[selectedCategory] : null
+  const currentSubcategory = selectedSubcategory ? subcategories[selectedSubcategory] : null
+
+  // Get subcategories for selected category
+  const categorySubcategories = useMemo(() => {
+    if (!selectedCategory) return []
+    return Object.values(subcategories).filter(sub => sub.category === selectedCategory)
+  }, [selectedCategory])
+
+  // Get terms for selected subcategory
+  const subcategoryTerms = useMemo(() => {
+    if (!selectedSubcategory) return []
+    return terms.filter(term => term.subcategory === selectedSubcategory)
+  }, [selectedSubcategory])
+
+  // Breadcrumb
+  const breadcrumbs = useMemo(() => {
+    const crumbs: Array<{ label: string; onClick: () => void }> = [
+      { label: "Start", onClick: handleBackToCategories },
+    ]
+    if (currentCategory) {
+      crumbs.push({ label: currentCategory.title, onClick: handleBackToSubcategories })
+    }
+    if (currentSubcategory) {
+      crumbs.push({ label: currentSubcategory.title, onClick: () => {} })
+    }
+    return crumbs
+  }, [currentCategory, currentSubcategory])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-900 to-purple-900 p-2 sm:p-4">
-      <div className="max-w-6xl mx-auto bg-slate-800/95 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden border border-slate-700">
+    <div className="min-h-screen bg-[#0a0a0a] text-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Header */}
-        <div className="bg-gradient-to-r from-slate-700 to-slate-600 text-white p-4 sm:p-8 text-center border-b border-slate-600">
-          <h1 className="text-2xl sm:text-4xl font-light mb-2 sm:mb-3">
-            ⚙️ Mechatronik Lexikon
+        <div className="mb-8 border-b border-gray-800 pb-6">
+          <h1 className="text-3xl sm:text-4xl font-light mb-2 text-white">
+            Mechatronik Lexikon
           </h1>
-          <p className="text-sm sm:text-lg opacity-90 mb-2">
+          <p className="text-sm text-gray-400">
             Umfassendes Nachschlagewerk für das LAP Fachgespräch
-          </p>
-          <p className="text-xs sm:text-sm opacity-70">
-            {terms.length} Begriffe in {Object.keys(categories).length} Kategorien
           </p>
         </div>
 
-        <div ref={controlsPlaceholderRef} className={isSticky ? "h-[76px] sm:h-[84px]" : ""} />
+        <div ref={controlsPlaceholderRef} className={isSticky ? "h-[76px]" : ""} />
 
-        {/* Controls mit Animation */}
+        {/* Controls mit Sticky */}
         <motion.div
           ref={controlsRef}
-          initial={{ y: -50, opacity: 0 }}
+          initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.4 }}
-          className={`${isSticky ? "fixed top-0 left-0 right-0 z-50 bg-slate-800/98 backdrop-blur-md shadow-lg" : "relative bg-slate-800/95 backdrop-blur-sm"} border-b border-slate-600 p-3 sm:p-4`}
+          transition={{ duration: 0.3 }}
+          className={`${isSticky ? "fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/95 backdrop-blur-sm border-b border-gray-800" : ""} mb-6`}
         >
-          <div className={`${isSticky ? "max-w-6xl mx-auto" : ""} flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center`}>
-            <div className="flex-1 min-w-0 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
-              <Input
-                type="text"
-                placeholder="Begriff suchen... (z.B. Schutzklasse, Diode, SPS)"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-10 py-2 sm:py-3 rounded-full border-2 border-slate-600 bg-slate-700 text-white placeholder-gray-400 focus:border-purple-500 focus:ring-0"
-              />
-              {searchTerm && (
-                <button
-                  onClick={clearSearch}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300"
+          <div className={`${isSticky ? "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4" : ""}`}>
+            {/* Breadcrumb */}
+            {viewState !== "categories" && (
+              <div className="flex items-center gap-2 mb-4 text-sm text-gray-400">
+                {breadcrumbs.map((crumb, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    {index > 0 && <ChevronRight className="w-4 h-4" />}
+                    <button
+                      onClick={crumb.onClick}
+                      className={`hover:text-white transition-colors ${index === breadcrumbs.length - 1 ? "text-white" : ""}`}
+                    >
+                      {crumb.label}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Search */}
+            <div className="flex gap-3 items-center">
+              <div className="flex-1 relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
+                <Input
+                  type="text"
+                  placeholder="Begriff suchen..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 pr-10 py-2.5 rounded-lg border border-gray-800 bg-[#111111] text-white placeholder-gray-500 focus:border-gray-600 focus:ring-0"
+                />
+                {searchTerm && (
+                  <button
+                    onClick={clearSearch}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-300"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                )}
+              </div>
+              {viewState !== "categories" && (
+                <Button
+                  onClick={handleBackToCategories}
+                  variant="outline"
+                  className="rounded-lg px-4 bg-[#111111] border-gray-800 text-gray-300 hover:bg-[#1a1a1a] hover:text-white"
                 >
-                  <X className="w-4 h-4 sm:w-5 sm:h-5" />
-                </button>
+                  <Home className="w-4 h-4 mr-2" />
+                  Start
+                </Button>
               )}
             </div>
-            <Button
-              onClick={() => toggleAllCategories()}
-              variant="outline"
-              className="rounded-full px-4 bg-slate-700 border-slate-600 text-white hover:bg-slate-600 text-sm"
-            >
-              {collapsedCategories.size === Object.keys(categories).length ? "Alle öffnen" : "Alle schliessen"}
-            </Button>
           </div>
         </motion.div>
 
-        {/* Suchergebnisse */}
-        {searchTerm && (
-          <div className="p-4 bg-slate-700/50">
-            <p className="text-sm text-gray-400 mb-3">
-              {searchResults.length} Ergebnis{searchResults.length !== 1 ? "se" : ""} für &quot;{searchTerm}&quot;
-            </p>
-            <AnimatePresence>
-              {searchResults.length > 0 ? (
-                <motion.div
-                  key="results"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-                >
-                  {searchResults.map((term) => (
-                    <motion.div
-                      key={term.id}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => handleTermClick(term)}
-                      className="bg-gradient-to-br from-purple-600 to-blue-600 text-white rounded-xl p-4 shadow-lg cursor-pointer"
-                    >
-                      <div className="font-semibold mb-1">{term.title}</div>
-                      <div className="text-xs opacity-80">
-                        {categories[term.category]?.icon} {categories[term.category]?.title}
-                      </div>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="no-result"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="text-center py-10 text-gray-400"
-                >
-                  <div className="text-3xl mb-2">🔍</div>
-                  Keine Ergebnisse gefunden.
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        )}
-
-        {/* Kategorien (wenn keine Suche aktiv) */}
-        {!searchTerm && (
-          <div className="p-4">
-            {Object.entries(categories).map(([categoryId, category]) => {
-              const categoryTerms = terms.filter((t) => t.category === categoryId)
-              const isCollapsed = collapsedCategories.has(categoryId)
-              return (
-                <div key={categoryId} className="mb-6 bg-slate-700/50 rounded-xl shadow-lg border border-slate-600 overflow-hidden">
-                  <div
-                    onClick={() => toggleCategory(categoryId)}
-                    className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 flex items-center justify-between cursor-pointer hover:from-purple-500 hover:to-blue-500 transition-all"
+        {/* Content */}
+        <div className="mt-6">
+          {/* Suchergebnisse */}
+          {searchTerm && (
+            <div>
+              <p className="text-sm text-gray-400 mb-4">
+                {searchResults.length} Ergebnis{searchResults.length !== 1 ? "se" : ""} für &quot;{searchTerm}&quot;
+              </p>
+              <AnimatePresence>
+                {searchResults.length > 0 ? (
+                  <motion.div
+                    key="results"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
                   >
-                    <div className="flex items-center gap-3">
-                      <span className="text-2xl">{category.icon}</span>
-                      <div>
-                        <h2 className="text-lg font-semibold">{category.title}</h2>
-                        <p className="text-sm opacity-90">{category.description}</p>
-                        <p className="text-xs opacity-70 mt-1">
-                          {categoryTerms.length} Begriffe • Bearbeitet von: {category.author}
+                    {searchResults.map((term) => {
+                      const category = categories[term.category]
+                      const subcategory = term.subcategory ? subcategories[term.subcategory] : null
+                      return (
+                        <motion.div
+                          key={term.id}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => handleTermClick(term)}
+                          className="bg-[#111111] border border-gray-800 rounded-lg p-5 cursor-pointer hover:border-gray-700 transition-colors"
+                        >
+                          <div className="font-medium mb-2 text-white">{term.title}</div>
+                          <div className="text-xs text-gray-400">
+                            {category?.icon} {category?.title}
+                            {subcategory && ` → ${subcategory.title}`}
+                          </div>
+                        </motion.div>
+                      )
+                    })}
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="no-result"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="text-center py-16 text-gray-400"
+                  >
+                    <div className="text-4xl mb-3">🔍</div>
+                    Keine Ergebnisse gefunden.
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
+
+          {/* Hauptkategorien */}
+          {!searchTerm && viewState === "categories" && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {Object.values(categories).map((category) => {
+                const categoryTerms = terms.filter((t) => t.category === category.id)
+                return (
+                  <motion.div
+                    key={category.id}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleCategoryClick(category.id)}
+                    className="bg-[#111111] border border-gray-800 rounded-lg p-6 cursor-pointer hover:border-gray-700 transition-colors"
+                  >
+                    <div className="flex items-start gap-4">
+                      <span className="text-3xl">{category.icon}</span>
+                      <div className="flex-1">
+                        <h2 className="text-lg font-medium mb-1 text-white">{category.title}</h2>
+                        <p className="text-sm text-gray-400 mb-2">{category.description}</p>
+                        <p className="text-xs text-gray-500">
+                          {categoryTerms.length} Begriffe
                         </p>
                       </div>
                     </div>
-                    <ChevronDown className={`w-6 h-6 transition-transform duration-300 ${isCollapsed ? "-rotate-90" : ""}`} />
-                  </div>
-                  <AnimatePresence>
-                    {!isCollapsed && (
-                      <motion.div
-                        key="cat-content"
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.4 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                          {categoryTerms.length > 0 ? (
-                            categoryTerms.map((term) => (
-                              <motion.div
-                                key={term.id}
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                onClick={() => handleTermClick(term)}
-                                className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 hover:from-purple-500 hover:to-blue-500 text-white rounded-xl p-4 shadow-lg cursor-pointer transition-all"
-                              >
-                                <div className="flex flex-col h-32 justify-between">
-                                  <h3 className="text-base font-semibold text-center">{term.title}</h3>
-                                  <div className="flex-1 flex items-center justify-center">
-                                    <span className="text-4xl opacity-50">📄</span>
-                                  </div>
-                                </div>
-                              </motion.div>
-                            ))
-                          ) : (
-                            <div className="col-span-full text-center py-8 text-gray-400">
-                              <div className="text-3xl mb-2">📝</div>
-                              Noch keine Inhalte vorhanden.
-                            </div>
-                          )}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              )
-            })}
-          </div>
-        )}
+                  </motion.div>
+                )
+              })}
+            </div>
+          )}
+
+          {/* Unterkategorien */}
+          {!searchTerm && viewState === "subcategories" && currentCategory && (
+            <div>
+              <div className="mb-6">
+                <button
+                  onClick={handleBackToCategories}
+                  className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors mb-4"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  Zurück zu Kategorien
+                </button>
+                <h2 className="text-2xl font-light mb-2 text-white">
+                  {currentCategory.icon} {currentCategory.title}
+                </h2>
+                <p className="text-sm text-gray-400">{currentCategory.description}</p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {categorySubcategories.map((subcategory) => {
+                  const subcategoryTerms = terms.filter((t) => t.subcategory === subcategory.id)
+                  return (
+                    <motion.div
+                      key={subcategory.id}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => handleSubcategoryClick(subcategory.id)}
+                      className="bg-[#111111] border border-gray-800 rounded-lg p-5 cursor-pointer hover:border-gray-700 transition-colors"
+                    >
+                      <h3 className="text-base font-medium mb-2 text-white">{subcategory.title}</h3>
+                      <p className="text-xs text-gray-500">
+                        {subcategoryTerms.length} Begriff{subcategoryTerms.length !== 1 ? "e" : ""}
+                      </p>
+                    </motion.div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Begriffe */}
+          {!searchTerm && viewState === "terms" && currentSubcategory && (
+            <div>
+              <div className="mb-6">
+                <button
+                  onClick={handleBackToSubcategories}
+                  className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors mb-4"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  Zurück zu Unterkategorien
+                </button>
+                <h2 className="text-2xl font-light mb-2 text-white">
+                  {currentSubcategory.title}
+                </h2>
+                {currentCategory && (
+                  <p className="text-sm text-gray-400">
+                    {currentCategory.icon} {currentCategory.title}
+                  </p>
+                )}
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {subcategoryTerms.map((term) => (
+                  <motion.div
+                    key={term.id}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleTermClick(term)}
+                    className="bg-[#111111] border border-gray-800 rounded-lg p-5 cursor-pointer hover:border-gray-700 transition-colors"
+                  >
+                    <div className="flex flex-col h-32 justify-between">
+                      <h3 className="text-base font-medium text-white">{term.title}</h3>
+                      <div className="flex-1 flex items-center justify-center">
+                        {term.image && term.image !== "/images/placeholder.png" ? (
+                          <img
+                            src={term.image}
+                            alt={term.title}
+                            className="max-h-16 max-w-full object-contain opacity-50"
+                            onError={(e) => {
+                              e.currentTarget.style.display = "none"
+                            }}
+                          />
+                        ) : (
+                          <span className="text-4xl opacity-20">📄</span>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Footer */}
-        <div className="bg-slate-700/30 text-center py-4 text-gray-400 text-sm border-t border-slate-600">
+        <div className="mt-16 pt-8 border-t border-gray-800 text-center text-sm text-gray-500">
           Mechatronik Lexikon • LAP Fachgespräch 2025
         </div>
 
@@ -244,36 +371,51 @@ export default function MechatronikLexikon() {
         <AnimatePresence>
           {selectedTerm && (
             <Dialog open={!!selectedTerm} onOpenChange={(open) => !open && setSelectedTerm(null)}>
-              <DialogContent className="max-w-[90vw] sm:max-w-2xl max-h-[90vh] p-0 overflow-hidden bg-white border-0 shadow-2xl">
+              <DialogContent className="max-w-[90vw] sm:max-w-3xl max-h-[90vh] p-0 overflow-hidden bg-[#111111] border border-gray-800">
                 <motion.div
-                  initial={{ scale: 0.9, opacity: 0 }}
+                  initial={{ scale: 0.95, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0.9, opacity: 0 }}
+                  exit={{ scale: 0.95, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <DialogHeader className="bg-gradient-to-r from-purple-600 to-blue-500 text-white p-6">
+                  <DialogHeader className="bg-[#1a1a1a] border-b border-gray-800 p-6">
                     <div className="flex items-center gap-3">
-                      <span className="text-3xl">{categories[selectedTerm.category]?.icon}</span>
-                      <div>
-                        <DialogTitle className="text-xl font-semibold">
+                      <span className="text-2xl">
+                        {categories[selectedTerm.category]?.icon}
+                      </span>
+                      <div className="flex-1">
+                        <DialogTitle className="text-xl font-medium text-white">
                           {selectedTerm.title}
                         </DialogTitle>
-                        <p className="text-sm opacity-80 mt-1">
+                        <p className="text-sm text-gray-400 mt-1">
                           {categories[selectedTerm.category]?.title}
+                          {selectedTerm.subcategory && ` → ${subcategories[selectedTerm.subcategory]?.title}`}
                         </p>
                       </div>
                     </div>
                   </DialogHeader>
                   <div className="p-6 overflow-y-auto max-h-[60vh]">
-                    <div className="prose prose-slate max-w-none">
-                      <h4 className="text-lg font-semibold text-slate-800 mb-3">Beschreibung</h4>
-                      <p className="text-gray-700 leading-relaxed mb-6">
+                    {/* Bild */}
+                    {selectedTerm.image && selectedTerm.image !== "/images/placeholder.png" && (
+                      <div className="mb-6">
+                        <img
+                          src={selectedTerm.image}
+                          alt={selectedTerm.title}
+                          className="w-full max-h-64 object-contain rounded-lg bg-[#0a0a0a] p-4 border border-gray-800"
+                          onError={(e) => {
+                            e.currentTarget.style.display = "none"
+                          }}
+                        />
+                      </div>
+                    )}
+                    <div className="prose prose-invert max-w-none">
+                      <h4 className="text-lg font-medium text-white mb-3">Beschreibung</h4>
+                      <p className="text-gray-300 leading-relaxed mb-6 whitespace-pre-line">
                         {selectedTerm.description}
                       </p>
-
-                      <div className="bg-purple-50 border-l-4 border-purple-500 p-4 rounded-r-lg">
-                        <h4 className="font-semibold text-slate-700 mb-2">💡 Beispiele</h4>
-                        <p className="text-gray-600">{selectedTerm.example}</p>
+                      <div className="bg-[#1a1a1a] border-l-4 border-gray-700 p-4 rounded-r-lg">
+                        <h4 className="font-medium text-white mb-2">Beispiele</h4>
+                        <p className="text-gray-300">{selectedTerm.example}</p>
                       </div>
                     </div>
                   </div>
