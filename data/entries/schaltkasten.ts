@@ -13,7 +13,7 @@ const oldTerms = [
     description: "Ein Schaltschrank enthält alle elektrischen Komponenten übersichtlich und sicher. Aufbau von oben nach unten: Einspeisung/Hauptschalter, Sicherungen/RCD, Steuerungsebene (SPS, Relais), Leistungsebene (Schütze, FU), Klemmenleisten. Wichtig sind Kabelkanäle für ordentliche Verdrahtung.",
     example: "Rittal-Schrank, Eaton-Komponenten, Siemens SPS",
     category: "schaltkasten",
-    subcategory: "komponenten",
+    subcategory: "schaltschrank-aufbau",
   },
   {
     id: "rcd-fi",

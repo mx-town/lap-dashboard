@@ -82,6 +82,7 @@ export function createContentBlocks(description: string, example: string): Conte
 
 // Map old subcategory IDs to new section IDs
 export const subcategoryToSectionMap: Record<string, string> = {
+  "basisschutz-fehlerschutz": "basisschutz-fehlerschutz",
   "schutzklassen": "schutzklassen",
   "ip-schutzarten": "ip-schutzarten",
   "sicherheitskonzepte": "sicherheitskonzepte",
@@ -89,6 +90,7 @@ export const subcategoryToSectionMap: Record<string, string> = {
   "leistung-arbeit": "leistung-arbeit",
   "widerstaende-schaltungen": "widerstaende-schaltungen",
   "spannungs-stromteiler": "spannungs-stromteiler",
+  "schaltschrank-aufbau": "schaltschrank-aufbau",
   "schutzschalter": "schutzschalter",
   "schaltgeraete": "schaltgeraete",
   "komponenten": "komponenten",
@@ -105,7 +107,8 @@ export const subcategoryToSectionMap: Record<string, string> = {
   "verbindungselemente": "verbindungselemente",
   "messgeraete": "messgeraete",
   "lehren": "lehren",
-  "pneumatik-komponenten": "pneumatik-grundlagen",
+  "pneumatik-grundlagen": "pneumatik-grundlagen",
+  "pneumatik-komponenten": "pneumatik-komponenten",
   "zylinder": "zylinder",
   "ventile": "ventile",
   "elektropneumatik": "elektropneumatik",
@@ -142,8 +145,4 @@ export function getSectionsByCategory(categoryId: string): Section[] {
 
 export function getEntriesBySection(entries: Entry[], sectionId: string): Entry[] {
   return entries.filter(e => e.sectionId === sectionId);
-}
-
-export function getEntryById(entries: Entry[], id: string): Entry | undefined {
-  return entries.find(e => e.id === id);
 }

@@ -13,7 +13,7 @@ const oldTerms = [
     description: "Pneumatik nutzt Druckluft (6-8 bar) zur Kraftübertragung. Eigenschaften: komprimierbar (federnd), sauber, schnell. Druckluftaufbereitung: Kompressor → Kühler → Filter → Wasserabscheider → Druckregler → Öler. Die Wartungseinheit (FRL) fasst Filter, Regler und Öler zusammen.",
     example: "Arbeitsdruck 6 bar, Volumenstrom in Nl/min",
     category: "pneumatik",
-    subcategory: "pneumatik-komponenten",
+    subcategory: "pneumatik-grundlagen",
   },
   {
     id: "ewz",

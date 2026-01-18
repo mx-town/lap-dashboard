@@ -12,9 +12,10 @@ interface SearchPopupProps {
   onQueryChange: (query: string) => void
   isOpen: boolean
   onClose: () => void
+  onResultSelect?: () => void
 }
 
-export function SearchPopup({ query, onQueryChange, isOpen, onClose }: SearchPopupProps) {
+export function SearchPopup({ query, onQueryChange, isOpen, onClose, onResultSelect }: SearchPopupProps) {
   const router = useRouter()
   const inputRef = useRef<HTMLInputElement>(null)
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -70,6 +71,8 @@ export function SearchPopup({ query, onQueryChange, isOpen, onClose }: SearchPop
       const category = section ? getCategoryById(section.categoryId) : null
       if (section && category) {
         router.push(`/${category.id}/${section.id}?entry=${entry.id}`)
+        onQueryChange("")
+        onResultSelect?.()
         onClose()
       }
     }
@@ -115,7 +118,11 @@ export function SearchPopup({ query, onQueryChange, isOpen, onClose }: SearchPop
                       <li key={entry.id}>
                         <Link
                           href={`/${category?.id}/${section?.id}?entry=${entry.id}`}
-                          onClick={onClose}
+                          onClick={() => {
+                            onQueryChange("")
+                            onResultSelect?.()
+                            onClose()
+                          }}
                           className={`block px-4 py-3 hover:bg-bg-secondary transition-colors ${
                             index === selectedIndex ? "bg-bg-secondary" : ""
                           }`}
@@ -125,7 +132,7 @@ export function SearchPopup({ query, onQueryChange, isOpen, onClose }: SearchPop
                           </div>
                           {category && section && (
                             <div className="text-sm text-text-muted">
-                              {category.icon} {category.title} → {section.title}
+                              {category.title} → {section.title}
                             </div>
                           )}
                         </Link>
