@@ -29,13 +29,18 @@ Eine interaktive Next.js Website zur Vorbereitung auf das Fachgespräch der Lehr
 
 ```bash
 # Dependencies installieren
-npm install
+bun install
 
 # Entwicklungsserver starten
-npm run dev
+bun run dev
 ```
 
 Dann öffne [http://localhost:3000](http://localhost:3000) im Browser.
+
+**Note:** This project uses [Bun](https://bun.sh) as the package manager. If you don't have Bun installed, you can install it with:
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
 
 ## Projekt Struktur
 
@@ -72,7 +77,7 @@ Bearbeite `data/terms.ts`:
 
 ```bash
 # Für statisches Hosting (GitHub Pages, Netlify)
-npm run build
+bun run build
 ```
 
 Die Dateien landen im `out/` Ordner.
