@@ -12,8 +12,10 @@ export function PanelCard({ children, className, hover = true, onClick }: PanelC
   return (
     <div
       className={cn(
-        "panel-card",
-        hover && "panel-card-hover cursor-pointer",
+        "bg-white border border-border-subtle rounded-xl p-6",
+        "shadow-card transition-all duration-200",
+        hover && "hover:shadow-card-hover hover:border-border-panel cursor-pointer",
+        onClick && "cursor-pointer",
         className
       )}
       onClick={onClick}

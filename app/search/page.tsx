@@ -1,22 +1,22 @@
 "use client"
 
-import { useState, useMemo, Suspense } from "react"
+import { useMemo, Suspense } from "react"
 import { useRouter } from "next/navigation"
 import Fuse from "fuse.js"
-import { entries, categories, sections, getCategoryById, getSectionById } from "@/data"
-import { PanelCard } from "@/components/ui/panel-card"
+import { entries, getCategoryById, getSectionById } from "@/data"
 import { Breadcrumb } from "@/components/layout/breadcrumb"
 import { useSearchParams } from "next/navigation"
+import { MainLayout } from "@/components/layout/main-layout"
+import Link from "next/link"
 
 function SearchContent() {
   const searchParams = useSearchParams()
   const query = searchParams.get("q") || ""
-  const router = useRouter()
 
   const fuse = useMemo(
     () =>
       new Fuse(entries, {
-        keys: ["title", "content"],
+        keys: ["title", "content.text", "content.items"],
         threshold: 0.3,
         includeScore: true,
       }),
@@ -30,58 +30,61 @@ function SearchContent() {
 
   return (
     <div className="min-h-screen bg-bg-primary">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
         <Breadcrumb />
 
-        <div className="mt-6 mb-8">
-          <h1 className="text-3xl font-light text-text-primary mb-2">
+        <header className="mb-8">
+          <h1 className="text-3xl lg:text-4xl font-bold text-text-primary mb-2 tracking-tight">
             Suchergebnisse
           </h1>
           {query && (
-            <p className="text-text-secondary">
+            <p className="text-base lg:text-lg text-text-secondary">
               {searchResults.length} Ergebnis{searchResults.length !== 1 ? "se" : ""} für &quot;{query}&quot;
             </p>
           )}
-        </div>
+        </header>
 
         {searchResults.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="space-y-4">
             {searchResults.map((entry) => {
               const section = getSectionById(entry.sectionId)
               const category = section ? getCategoryById(section.categoryId) : null
 
               return (
-                <PanelCard
+                <Link
                   key={entry.id}
-                  hover
-                  onClick={() => {
-                    if (section && category) {
-                      router.push(`/${category.id}/${section.id}?entry=${entry.id}`)
-                    }
-                  }}
+                  href={`/${category?.id}/${section?.id}?entry=${entry.id}`}
+                  className="block p-5 rounded-lg border border-border-subtle hover:border-accent-primary/50 hover:bg-bg-secondary transition-all group"
                 >
-                  <div className="p-5">
-                    <h2 className="text-base font-semibold text-text-primary mb-2">
-                      {entry.title}
-                    </h2>
-                    {category && section && (
-                      <p className="text-xs text-text-muted">
-                        {category.icon} {category.title} → {section.title}
-                      </p>
-                    )}
-                  </div>
-                </PanelCard>
+                  <h2 className="text-xl font-semibold text-text-primary mb-2 group-hover:text-accent-primary transition-colors">
+                    {entry.title}
+                  </h2>
+                  {category && section && (
+                    <p className="text-sm text-text-muted mb-3">
+                      {category.icon} {category.title} → {section.title}
+                    </p>
+                  )}
+                  {entry.content.length > 0 && entry.content[0].type === 'paragraph' && (
+                    <p className="text-text-secondary line-clamp-2">
+                      {'text' in entry.content[0] ? entry.content[0].text : ''}
+                    </p>
+                  )}
+                </Link>
               )
             })}
           </div>
         ) : query ? (
-          <div className="text-center py-16 text-text-secondary">
-            <div className="text-4xl mb-3">🔍</div>
-            Keine Ergebnisse gefunden.
+          <div className="text-center py-16">
+            <div className="text-6xl mb-4">🔍</div>
+            <p className="text-lg text-text-secondary mb-2">Keine Ergebnisse gefunden.</p>
+            <p className="text-sm text-text-muted">
+              Versuchen Sie es mit einem anderen Suchbegriff.
+            </p>
           </div>
         ) : (
-          <div className="text-center py-16 text-text-secondary">
-            Bitte geben Sie einen Suchbegriff ein.
+          <div className="text-center py-16">
+            <div className="text-6xl mb-4">🔍</div>
+            <p className="text-lg text-text-secondary">Bitte geben Sie einen Suchbegriff ein.</p>
           </div>
         )}
       </div>
@@ -91,12 +94,14 @@ function SearchContent() {
 
 export default function SearchPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-bg-primary flex items-center justify-center">
-        <div className="text-text-secondary">Lade Suchergebnisse...</div>
-      </div>
-    }>
-      <SearchContent />
-    </Suspense>
+    <MainLayout>
+      <Suspense fallback={
+        <div className="min-h-screen bg-bg-primary flex items-center justify-center">
+          <div className="text-text-secondary">Lade Suchergebnisse...</div>
+        </div>
+      }>
+        <SearchContent />
+      </Suspense>
+    </MainLayout>
   )
 }

@@ -1,7 +1,7 @@
 import { ChevronRight } from "lucide-react"
 import Link from "next/link"
-import type { Category, Section } from "@/data"
 import { getCategoryById, getSectionById } from "@/data"
+import { cn } from "@/lib/utils"
 
 interface BreadcrumbProps {
   categoryId?: string
@@ -25,16 +25,18 @@ export function Breadcrumb({ categoryId, sectionId }: BreadcrumbProps) {
   }
 
   return (
-    <nav className="flex items-center gap-2 text-sm text-text-secondary">
+    <nav className="flex items-center gap-2 text-sm text-text-muted mb-6">
       {crumbs.map((crumb, idx) => (
         <div key={idx} className="flex items-center gap-2">
-          {idx > 0 && <ChevronRight className="w-4 h-4" />}
+          {idx > 0 && (
+            <ChevronRight className="w-4 h-4 text-text-light" />
+          )}
           {idx === crumbs.length - 1 ? (
-            <span className="text-text-primary">{crumb.label}</span>
+            <span className="text-text-primary font-medium">{crumb.label}</span>
           ) : (
             <Link
               href={crumb.href}
-              className="hover:text-text-primary transition-colors"
+              className="hover:text-accent-primary transition-colors"
             >
               {crumb.label}
             </Link>
