@@ -5,9 +5,8 @@ import {
   getSectionsByCategory,
   categories,
 } from "@/data"
-import { PanelCard } from "@/components/ui/panel-card"
-import { NumberBadge } from "@/components/ui/number-badge"
 import { Breadcrumb } from "@/components/layout/breadcrumb"
+import { NumberBadge } from "@/components/ui/number-badge"
 
 export function generateStaticParams() {
   return categories.map((category) => ({
@@ -31,37 +30,40 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <div className="min-h-screen bg-bg-primary">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
         <Breadcrumb categoryId={categoryId} />
 
-        <div className="mt-6 mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <span className="text-3xl">{category.icon}</span>
-            <div>
-              <h1 className="text-3xl font-light text-text-primary">
-                {category.title}
-              </h1>
-              <p className="text-text-secondary">{category.subtitle}</p>
-            </div>
+        <header className="mb-8">
+          <div className="mb-3">
+            <span className="text-4xl">{category.icon}</span>
           </div>
-        </div>
+          <h1 className="text-3xl lg:text-4xl font-bold text-text-primary tracking-tight mb-2">
+            {category.title}
+          </h1>
+          <p className="text-base lg:text-lg text-text-secondary leading-relaxed">
+            {category.subtitle}
+          </p>
+        </header>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <nav className="space-y-2">
           {sections.map((section) => (
-            <Link key={section.id} href={`/${categoryId}/${section.id}`}>
-              <PanelCard hover>
-                <div className="p-5">
-                  <div className="flex items-center gap-3 mb-2">
-                    <NumberBadge number={section.number} />
-                    <h2 className="text-base font-semibold text-text-primary">
-                      {section.title}
-                    </h2>
-                  </div>
-                </div>
-              </PanelCard>
+            <Link
+              key={section.id}
+              href={`/${categoryId}/${section.id}`}
+              className="flex items-center gap-4 p-4 rounded-lg hover:bg-bg-secondary transition-colors group"
+            >
+              <NumberBadge number={section.number} />
+              <div className="flex-1">
+                <h2 className="text-lg font-semibold text-text-primary group-hover:text-accent-primary transition-colors">
+                  {section.title}
+                </h2>
+              </div>
+              <span className="text-text-muted opacity-0 group-hover:opacity-100 transition-opacity">
+                →
+              </span>
             </Link>
           ))}
-        </div>
+        </nav>
       </div>
     </div>
   )
