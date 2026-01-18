@@ -23,17 +23,4 @@ export {
   getSectionById,
   getSectionsByCategory,
   getEntriesBySection,
-  getEntryById,
 } from './helpers';
-
-// Helper lookups for entries
-import type { Entry } from './types';
-import { entries } from './entries';
-
-export const entriesBySection: Record<string, Entry[]> = {};
-entries.forEach(entry => {
-  if (!entriesBySection[entry.sectionId]) {
-    entriesBySection[entry.sectionId] = [];
-  }
-  entriesBySection[entry.sectionId].push(entry);
-});
