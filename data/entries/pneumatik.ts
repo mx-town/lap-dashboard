@@ -2,110 +2,342 @@
 // ENTRIES - Pneumatik (Category 8)
 // ============================================================================
 
-import type { Entry } from '../types';
-import { createContentBlocks, subcategoryToSectionMap } from '../helpers';
+import type { Entry, ContentBlock } from '../types';
 
-const oldTerms = [
+const entriesData: Array<{
+  id: string;
+  sectionId: string;
+  title: string;
+  content: ContentBlock[];
+  image?: string;
+}> = [
   {
     id: "pneumatik-grundlagen",
+    sectionId: "pneumatik-grundlagen",
     title: "Pneumatik Grundlagen",
     image: "/images/pneumatik.png",
-    description: "Pneumatik nutzt Druckluft (6-8 bar) zur Kraftübertragung. Eigenschaften: komprimierbar (federnd), sauber, schnell. Druckluftaufbereitung: Kompressor → Kühler → Filter → Wasserabscheider → Druckregler → Öler. Die Wartungseinheit (FRL) fasst Filter, Regler und Öler zusammen.",
-    example: "Arbeitsdruck 6 bar, Volumenstrom in Nl/min",
-    category: "pneumatik",
-    subcategory: "pneumatik-grundlagen",
+    content: [
+      {
+        type: 'definition',
+        text: 'Pneumatik nutzt Druckluft (6-8 bar) zur Kraftübertragung.'
+      },
+      {
+        type: 'list',
+        title: 'Eigenschaften',
+        items: [
+          'Komprimierbar (federnd)',
+          'Sauber',
+          'Schnell'
+        ]
+      },
+      {
+        type: 'list',
+        title: 'Druckluftaufbereitung',
+        items: [
+          'Kompressor',
+          'Kühler',
+          'Filter',
+          'Wasserabscheider',
+          'Druckregler',
+          'Öler'
+        ]
+      },
+      {
+        type: 'note',
+        text: 'Die Wartungseinheit (FRL) fasst Filter, Regler und Öler zusammen.'
+      },
+      {
+        type: 'example',
+        title: 'Typische Werte',
+        text: 'Arbeitsdruck 6 bar, Volumenstrom in Nl/min'
+      }
+    ]
   },
   {
     id: "ewz",
+    sectionId: "zylinder",
     title: "Einfachwirkender Zylinder (EWZ)",
-    image: "/images/placeholder.png",
-    description: "Aufbau: Ein Druckluftanschluss, Rückstellung durch Feder. Ansteuerung: 3/2-Ventil. Eigenschaft: Kraft nur in eine Richtung. Geeignet für einfache Bewegungen ohne große Kräfte.",
-    example: "Einfachwirkender Zylinder mit Federrückstellung",
-    category: "pneumatik",
-    subcategory: "zylinder",
+    content: [
+      {
+        type: 'definition',
+        text: 'Ein einfachwirkender Zylinder hat einen Druckluftanschluss und Rückstellung durch Feder.'
+      },
+      {
+        type: 'list',
+        title: 'Eigenschaften',
+        items: [
+          'Ansteuerung: 3/2-Ventil',
+          'Kraft nur in eine Richtung',
+          'Geeignet für einfache Bewegungen ohne große Kräfte'
+        ]
+      },
+      {
+        type: 'example',
+        title: 'Anwendung',
+        text: 'Einfachwirkender Zylinder mit Federrückstellung'
+      }
+    ]
   },
   {
     id: "dwz",
+    sectionId: "zylinder",
     title: "Doppeltwirkender Zylinder (DWZ)",
-    image: "/images/placeholder.png",
-    description: "Aufbau: Zwei Druckluftanschlüsse, aktive Bewegung in beide Richtungen. Ansteuerung: 5/2- oder 5/3-Ventil. Eigenschaft: Größere Kraft, bessere Kontrolle. Höhere Kraft als EWZ.",
-    example: "Doppeltwirkender Zylinder für Hub- und Senkbewegung",
-    category: "pneumatik",
-    subcategory: "zylinder",
+    content: [
+      {
+        type: 'definition',
+        text: 'Ein doppeltwirkender Zylinder hat zwei Druckluftanschlüsse und aktive Bewegung in beide Richtungen.'
+      },
+      {
+        type: 'list',
+        title: 'Eigenschaften',
+        items: [
+          'Ansteuerung: 5/2- oder 5/3-Ventil',
+          'Größere Kraft',
+          'Bessere Kontrolle',
+          'Höhere Kraft als EWZ'
+        ]
+      },
+      {
+        type: 'example',
+        title: 'Anwendung',
+        text: 'Doppeltwirkender Zylinder für Hub- und Senkbewegung'
+      }
+    ]
   },
   {
     id: "pneumatik-zylinder",
+    sectionId: "zylinder",
     title: "Pneumatikzylinder",
     image: "/images/zylinder.png",
-    description: "Einfachwirkende Zylinder: Druckluft nur auf einer Seite, Rückstellung durch Feder. Doppeltwirkende Zylinder: Druckluft beidseitig, Kraft in beide Richtungen. Kolbenkraft F = p × A = p × (π × d² / 4). Beispiel: d = 50 mm, p = 6 bar → F = 6 × 10⁵ Pa × (π × 0,05² / 4) = 1178 N. Bei Rückhub: Ringfläche berechnen (Kolbenstange abziehen).",
-    example: "Zylinder Ø63mm bei 6 bar: F = 0.6 × 3117mm² = 1870N",
-    category: "pneumatik",
-    subcategory: "zylinder",
+    content: [
+      {
+        type: 'definition',
+        text: 'Pneumatikzylinder wandeln Druckluft in lineare Bewegung um.'
+      },
+      {
+        type: 'table',
+        headers: ['Typ', 'Beschreibung'],
+        rows: [
+          ['Einfachwirkend', 'Druckluft nur auf einer Seite, Rückstellung durch Feder'],
+          ['Doppeltwirkend', 'Druckluft beidseitig, Kraft in beide Richtungen']
+        ]
+      },
+      {
+        type: 'formula',
+        latex: 'F = p \\times A = p \\times \\frac{\\pi \\times d^2}{4}',
+        description: 'Kolbenkraft'
+      },
+      {
+        type: 'paragraph',
+        text: 'Beispiel: d = 50 mm, p = 6 bar → F = 6 × 10⁵ Pa × (π × 0,05² / 4) = 1178 N.'
+      },
+      {
+        type: 'note',
+        text: 'Bei Rückhub: Ringfläche berechnen (Kolbenstange abziehen).'
+      },
+      {
+        type: 'example',
+        title: 'Berechnungsbeispiel',
+        text: 'Zylinder Ø63mm bei 6 bar: F = 0.6 × 3117mm² = 1870N'
+      }
+    ]
   },
   {
     id: "pneumatik-ventile",
+    sectionId: "ventile",
     title: "Wegeventile (3/2, 5/2, 5/3)",
     image: "/images/ventile.png",
-    description: "Schema: Anschlüsse / Schaltstellungen (z.B. 5/2 = 5 Anschlüsse, 2 Stellungen). Anschlussbezeichnung (nach ISO 5599): 1 = Druckversorgung (P), 2 und 4 = Arbeitsanschlüsse (A, B), 3 und 5 = Entlüftung (R, S), 12 und 14 = Steueranschlüsse. Wichtige Ventiltypen: 3/2-Wegeventil (für einfachwirkende Zylinder), 5/2-Wegeventil (für doppeltwirkende Zylinder), 5/3-Wegeventil (mit Mittelstellung: gesperrt, entlüftet oder druckbeaufschlagt). Betätigung: manuell, mechanisch, elektrisch (Magnetventil), pneumatisch.",
-    example: "5/2-Wegeventil bistabil mit Magnetbetätigung",
-    category: "pneumatik",
-    subcategory: "ventile",
+    content: [
+      {
+        type: 'definition',
+        text: 'Wegeventile steuern den Druckluftfluss in pneumatischen Systemen.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Schema: Anschlüsse / Schaltstellungen (z.B. 5/2 = 5 Anschlüsse, 2 Stellungen).'
+      },
+      {
+        type: 'table',
+        headers: ['Anschluss', 'Bezeichnung (ISO 5599)', 'Funktion'],
+        rows: [
+          ['1', 'P', 'Druckversorgung'],
+          ['2, 4', 'A, B', 'Arbeitsanschlüsse'],
+          ['3, 5', 'R, S', 'Entlüftung'],
+          ['12, 14', '-', 'Steueranschlüsse']
+        ]
+      },
+      {
+        type: 'table',
+        headers: ['Ventiltyp', 'Anwendung'],
+        rows: [
+          ['3/2-Wegeventil', 'Für einfachwirkende Zylinder'],
+          ['5/2-Wegeventil', 'Für doppeltwirkende Zylinder'],
+          ['5/3-Wegeventil', 'Mit Mittelstellung: gesperrt, entlüftet oder druckbeaufschlagt']
+        ]
+      },
+      {
+        type: 'list',
+        title: 'Betätigung',
+        items: [
+          'Manuell',
+          'Mechanisch',
+          'Elektrisch (Magnetventil)',
+          'Pneumatisch'
+        ]
+      },
+      {
+        type: 'example',
+        title: 'Anwendung',
+        text: '5/2-Wegeventil bistabil mit Magnetbetätigung'
+      }
+    ]
   },
   {
     id: "wartungseinheit",
+    sectionId: "pneumatik-komponenten",
     title: "Wartungseinheit",
-    image: "/images/placeholder.png",
-    description: "Die Wartungseinheit (FRL = Filter-Regler-Luftöler) bereitet Druckluft auf: Filter entfernt Partikel und Wasser (regelmäßig entleeren!), Regler stellt konstanten Arbeitsdruck ein (unabhängig vom Netzdruck), Öler fügt Schmiernebel zu (bei modernen Ventilen oft nicht mehr nötig). Wichtig für Lebensdauer der Komponenten.",
-    example: "FRL-Einheit 1/4\", Druckregler 6 bar",
-    category: "pneumatik",
-    subcategory: "pneumatik-komponenten",
+    content: [
+      {
+        type: 'definition',
+        text: 'Die Wartungseinheit (FRL = Filter-Regler-Luftöler) bereitet Druckluft auf.'
+      },
+      {
+        type: 'table',
+        headers: ['Komponente', 'Funktion'],
+        rows: [
+          ['Filter', 'Entfernt Partikel und Wasser (regelmäßig entleeren!)'],
+          ['Regler', 'Stellt konstanten Arbeitsdruck ein (unabhängig vom Netzdruck)'],
+          ['Öler', 'Fügt Schmiernebel zu (bei modernen Ventilen oft nicht mehr nötig)']
+        ]
+      },
+      {
+        type: 'note',
+        text: 'Wichtig für Lebensdauer der Komponenten.'
+      },
+      {
+        type: 'example',
+        title: 'Typische Ausführung',
+        text: 'FRL-Einheit 1/4", Druckregler 6 bar'
+      }
+    ]
   },
   {
     id: "manometer",
+    sectionId: "pneumatik-komponenten",
     title: "Manometer",
-    image: "/images/placeholder.png",
-    description: "Das Manometer (Druckmesser) zeigt den aktuellen Druck in bar an. Wichtig zur Überwachung des Systemdrucks. Anschluss meist über T-Stück oder direkt am Regler.",
-    example: "Manometer 0-10 bar für Drucküberwachung",
-    category: "pneumatik",
-    subcategory: "pneumatik-komponenten",
+    content: [
+      {
+        type: 'definition',
+        text: 'Das Manometer (Druckmesser) zeigt den aktuellen Druck in bar an.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Wichtig zur Überwachung des Systemdrucks. Anschluss meist über T-Stück oder direkt am Regler.'
+      },
+      {
+        type: 'example',
+        title: 'Anwendung',
+        text: 'Manometer 0-10 bar für Drucküberwachung'
+      }
+    ]
   },
   {
     id: "drosselrueckschlagventil",
+    sectionId: "pneumatik-komponenten",
     title: "Drosselrückschlagventil",
-    image: "/images/placeholder.png",
-    description: "Das Drosselrückschlagventil begrenzt die Geschwindigkeit in eine Richtung (drosselt) und lässt die andere Richtung frei. Abluftdrosselung: Drossel am Abluftanschluss. Bessere Kontrolle, Standard in der Industrie. Zuluftdrosselung: Drossel am Zuluftanschluss. Ruckelige Bewegung, selten verwendet.",
-    example: "Geschwindigkeitsregelung für Aus- und Einfahrbewegung",
-    category: "pneumatik",
-    subcategory: "pneumatik-komponenten",
+    content: [
+      {
+        type: 'definition',
+        text: 'Das Drosselrückschlagventil begrenzt die Geschwindigkeit in eine Richtung (drosselt) und lässt die andere Richtung frei.'
+      },
+      {
+        type: 'table',
+        headers: ['Typ', 'Beschreibung', 'Eigenschaft'],
+        rows: [
+          ['Abluftdrosselung', 'Drossel am Abluftanschluss', 'Bessere Kontrolle, Standard in der Industrie'],
+          ['Zuluftdrosselung', 'Drossel am Zuluftanschluss', 'Ruckelige Bewegung, selten verwendet']
+        ]
+      },
+      {
+        type: 'example',
+        title: 'Anwendung',
+        text: 'Geschwindigkeitsregelung für Aus- und Einfahrbewegung'
+      }
+    ]
   },
   {
     id: "elektropneumatik-magnetventil",
+    sectionId: "elektropneumatik",
     title: "Elektropneumatik / Magnetventil",
-    image: "/images/placeholder.png",
-    description: "Aufbau: Elektrische Steuerung (Sensoren, SPS, Taster) + pneumatische Aktoren. Magnetventile als Schnittstelle. Magnetventil: Elektrisch betätigtes Wegeventil. Spule zieht Anker an und schaltet Ventilstellung um. Vorteile: Automatisierung, SPS-Anbindung, Sensorintegration, komplexe Ablaufsteuerungen möglich. Magnetventile werden elektrisch angesteuert (24V DC, 230V AC) und schalten die Druckluft.",
-    example: "5/2-Wegeventil mit Magnetspule, SPS-Steuerung",
-    category: "pneumatik",
-    subcategory: "elektropneumatik",
+    content: [
+      {
+        type: 'definition',
+        text: 'Elektropneumatik kombiniert elektrische Steuerung mit pneumatischen Aktoren.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Aufbau: Elektrische Steuerung (Sensoren, SPS, Taster) + pneumatische Aktoren. Magnetventile als Schnittstelle.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Magnetventil: Elektrisch betätigtes Wegeventil. Spule zieht Anker an und schaltet Ventilstellung um.'
+      },
+      {
+        type: 'list',
+        title: 'Vorteile',
+        items: [
+          'Automatisierung',
+          'SPS-Anbindung',
+          'Sensorintegration',
+          'Komplexe Ablaufsteuerungen möglich'
+        ]
+      },
+      {
+        type: 'note',
+        text: 'Magnetventile werden elektrisch angesteuert (24V DC, 230V AC) und schalten die Druckluft.'
+      },
+      {
+        type: 'example',
+        title: 'Anwendung',
+        text: '5/2-Wegeventil mit Magnetspule, SPS-Steuerung'
+      }
+    ]
   },
   {
     id: "sensoren-pneumatik",
+    sectionId: "elektropneumatik",
     title: "Sensoren (induktiv, kapazitiv, Reed)",
-    image: "/images/placeholder.png",
-    description: "Induktive Sensoren erkennen Metall durch Änderung des Magnetfelds. Kapazitive Sensoren reagieren auf alle Materialien. Reed-Schalter sind magnetisch betätigte Kontakte. Wichtig für Endlagenabfrage bei Zylindern.",
-    example: "Induktiver Näherungsschalter M18, Reed-Schalter für Magnetzylinder",
-    category: "pneumatik",
-    subcategory: "elektropneumatik",
-  },
+    content: [
+      {
+        type: 'definition',
+        text: 'Sensoren erkennen Endlagen und Positionen von pneumatischen Zylindern.'
+      },
+      {
+        type: 'table',
+        headers: ['Typ', 'Funktionsweise', 'Anwendung'],
+        rows: [
+          ['Induktiv', 'Erkennt Metall durch Änderung des Magnetfelds', 'Metallische Zylinder'],
+          ['Kapazitiv', 'Reagiert auf alle Materialien', 'Universal'],
+          ['Reed', 'Magnetisch betätigte Kontakte', 'Magnetzylinder']
+        ]
+      },
+      {
+        type: 'note',
+        text: 'Wichtig für Endlagenabfrage bei Zylindern.'
+      },
+      {
+        type: 'example',
+        title: 'Anwendungsbeispiele',
+        text: 'Induktiver Näherungsschalter M18, Reed-Schalter für Magnetzylinder'
+      }
+    ]
+  }
 ];
 
-export const entries: Entry[] = oldTerms.map(term => {
-  const sectionId = subcategoryToSectionMap[term.subcategory || ''] || 'pneumatik-grundlagen';
-  
-  return {
-    id: term.id,
-    sectionId,
-    title: term.title,
-    content: createContentBlocks(term.description, term.example),
-    image: term.image !== "/images/placeholder.png" ? term.image : undefined,
-  };
-});
+export const entries: Entry[] = entriesData.map(entry => ({
+  id: entry.id,
+  sectionId: entry.sectionId,
+  title: entry.title,
+  content: entry.content,
+  image: entry.image
+}));

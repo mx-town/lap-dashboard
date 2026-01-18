@@ -6,7 +6,10 @@ import type { ContentBlock, Category, Section, Entry } from './types';
 import { categories } from './categories';
 import { sections } from './sections';
 
-// Helper function to convert old description/example to content blocks
+/**
+ * @deprecated This function is deprecated. Use explicit ContentBlock arrays instead.
+ * Kept for backward compatibility only.
+ */
 export function createContentBlocks(description: string, example: string): ContentBlock[] {
   const blocks: ContentBlock[] = [];
   

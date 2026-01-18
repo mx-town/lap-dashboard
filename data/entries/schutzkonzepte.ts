@@ -2,167 +2,418 @@
 // ENTRIES - Schutzkonzepte (Category 1)
 // ============================================================================
 
-import type { Entry } from '../types';
-import { createContentBlocks, subcategoryToSectionMap } from '../helpers';
+import type { Entry, ContentBlock } from '../types';
 
-const oldTerms = [
-  // 1.1 Basisschutz und Fehlerschutz
+const entriesData: Array<{
+  id: string;
+  sectionId: string;
+  title: string;
+  content: ContentBlock[];
+  image?: string;
+}> = [
   {
     id: "basisschutz",
+    sectionId: "basisschutz-fehlerschutz",
     title: "Basisschutz (Schutz gegen direktes Berühren)",
-    image: "/images/placeholder.png",
-    description: "Definition: Schutz von Personen vor dem Berühren aktiver (spannungsführender) Teile im Normalbetrieb.\n\nMaßnahmen:\n• Isolierung aktiver Teile (Kabelummantelung, Gehäuse)\n• Abdeckungen und Gehäuse (IP-Schutzarten, mindestens IP2X oder IPXXB)\n• Hindernisse und Abstände (im Industriebereich)\n• Schutz durch Standort (nur Elektrofachkräfte haben Zugang)",
-    example: "",
-    category: "schutzkonzepte",
-    subcategory: "basisschutz-fehlerschutz",
+    content: [
+      {
+        type: 'definition',
+        text: 'Schutz von Personen vor dem Berühren aktiver (spannungsführender) Teile im Normalbetrieb.'
+      },
+      {
+        type: 'list',
+        title: 'Maßnahmen',
+        items: [
+          'Isolierung aktiver Teile (Kabelummantelung, Gehäuse)',
+          'Abdeckungen und Gehäuse (IP-Schutzarten, mindestens IP2X oder IPXXB)',
+          'Hindernisse und Abstände (im Industriebereich)',
+          'Schutz durch Standort (nur Elektrofachkräfte haben Zugang)'
+        ]
+      }
+    ]
   },
   {
     id: "fehlerschutz",
+    sectionId: "basisschutz-fehlerschutz",
     title: "Fehlerschutz (Schutz bei indirektem Berühren)",
-    image: "/images/placeholder.png",
-    description: "Definition: Schutz von Personen vor gefährlichen Berührungsspannungen an leitfähigen Gehäusen, die durch einen Isolationsfehler unter Spannung stehen.\n\nMaßnahmen:\n• Schutzerdung – Gehäuse mit PE verbinden, Fehlerstrom löst Sicherung aus\n• Fehlerstrom-Schutzeinrichtung (FI/RCD) – erkennt Differenzstrom\n• Schutzisolierung (Schutzklasse II) – doppelte Isolierung\n• Schutzkleinspannung (SELV/PELV) – ungefährliche Spannung\n• Schutztrennung – galvanische Trennung vom Netz",
-    example: "",
-    category: "schutzkonzepte",
-    subcategory: "basisschutz-fehlerschutz",
+    content: [
+      {
+        type: 'definition',
+        text: 'Schutz von Personen vor gefährlichen Berührungsspannungen an leitfähigen Gehäusen, die durch einen Isolationsfehler unter Spannung stehen.'
+      },
+      {
+        type: 'list',
+        title: 'Maßnahmen',
+        items: [
+          'Schutzerdung – Gehäuse mit PE verbinden, Fehlerstrom löst Sicherung aus',
+          'Fehlerstrom-Schutzeinrichtung (FI/RCD) – erkennt Differenzstrom',
+          'Schutzisolierung (Schutzklasse II) – doppelte Isolierung',
+          'Schutzkleinspannung (SELV/PELV) – ungefährliche Spannung',
+          'Schutztrennung – galvanische Trennung vom Netz'
+        ]
+      }
+    ]
   },
   {
     id: "zusatzschutz",
+    sectionId: "basisschutz-fehlerschutz",
     title: "Zusatzschutz",
-    image: "/images/placeholder.png",
-    description: "Zusatzschutz: Zusätzliche Schutzmaßnahme bei Versagen von Basis- und Fehlerschutz. In Österreich: FI mit IΔn ≤ 30 mA Pflicht für Steckdosen bis 32 A.",
-    example: "",
-    category: "schutzkonzepte",
-    subcategory: "basisschutz-fehlerschutz",
+    content: [
+      {
+        type: 'definition',
+        text: 'Zusätzliche Schutzmaßnahme bei Versagen von Basis- und Fehlerschutz.'
+      },
+      {
+        type: 'warning',
+        text: 'In Österreich: FI mit IΔn ≤ 30 mA Pflicht für Steckdosen bis 32 A.'
+      }
+    ]
   },
-  // 1.2 Schutzklassen
   {
     id: "schutzklasse-0",
+    sectionId: "schutzklassen",
     title: "Schutzklasse 0",
     image: "/images/schutzklasse0.png",
-    description: "Schutzklasse 0 bietet nur Basisisolierung ohne Schutzleiteranschluss. Der Schutz erfolgt ausschliesslich durch die Umgebung (z.B. isolierter Standort). Diese Schutzklasse ist in der Schweiz und vielen anderen Ländern nicht mehr zulässig, da sie keinen ausreichenden Schutz gegen elektrischen Schlag bietet.",
-    example: "Historische Geräte ohne Schutzleiter (heute nicht mehr erlaubt)",
-    category: "schutzkonzepte",
-    subcategory: "schutzklassen",
+    content: [
+      {
+        type: 'definition',
+        text: 'Schutzklasse 0 bietet nur Basisisolierung ohne Schutzleiteranschluss. Der Schutz erfolgt ausschließlich durch die Umgebung (z.B. isolierter Standort).'
+      },
+      {
+        type: 'warning',
+        text: 'Diese Schutzklasse ist in der Schweiz und vielen anderen Ländern nicht mehr zulässig, da sie keinen ausreichenden Schutz gegen elektrischen Schlag bietet.'
+      },
+      {
+        type: 'example',
+        title: 'Historisch',
+        text: 'Historische Geräte ohne Schutzleiter (heute nicht mehr erlaubt)'
+      }
+    ]
   },
   {
     id: "schutzklasse-1",
+    sectionId: "schutzklassen",
     title: "Schutzklasse I",
     image: "/images/schutzklasse1.png",
-    description: "Schutzklasse I verfügt über Basisisolierung und einen Schutzleiteranschluss (PE). Alle berührbaren leitfähigen Teile sind mit dem Schutzleiter verbunden. Bei einem Isolationsfehler löst die Schutzeinrichtung (RCD/Sicherung) aus und verhindert so gefährliche Berührungsspannungen. Symbol: Erdungszeichen.",
-    example: "Waschmaschine, Elektroherd, Bohrmaschine mit Metallgehäuse",
-    category: "schutzkonzepte",
-    subcategory: "schutzklassen",
+    content: [
+      {
+        type: 'definition',
+        text: 'Schutzklasse I verfügt über Basisisolierung und einen Schutzleiteranschluss (PE). Alle berührbaren leitfähigen Teile sind mit dem Schutzleiter verbunden.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Bei einem Isolationsfehler löst die Schutzeinrichtung (RCD/Sicherung) aus und verhindert so gefährliche Berührungsspannungen. Symbol: Erdungszeichen.'
+      },
+      {
+        type: 'example',
+        title: 'Anwendungsbeispiele',
+        text: 'Waschmaschine, Elektroherd, Bohrmaschine mit Metallgehäuse'
+      }
+    ]
   },
   {
     id: "schutzklasse-2",
+    sectionId: "schutzklassen",
     title: "Schutzklasse II",
     image: "/images/schutzklasse2.png",
-    description: "Schutzklasse II bietet Schutzisolierung durch doppelte oder verstärkte Isolierung. Ein Schutzleiteranschluss ist nicht erforderlich. Das Gerät hat meist ein Kunststoffgehäuse. Das Symbol ist ein doppeltes Quadrat. Diese Bauweise bietet hohe Sicherheit auch ohne Erdung.",
-    example: "Handy-Ladegerät, Haarföhn, Akkuschrauber, viele Elektrowerkzeuge",
-    category: "schutzkonzepte",
-    subcategory: "schutzklassen",
+    content: [
+      {
+        type: 'definition',
+        text: 'Schutzklasse II bietet Schutzisolierung durch doppelte oder verstärkte Isolierung. Ein Schutzleiteranschluss ist nicht erforderlich.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Das Gerät hat meist ein Kunststoffgehäuse. Das Symbol ist ein doppeltes Quadrat. Diese Bauweise bietet hohe Sicherheit auch ohne Erdung.'
+      },
+      {
+        type: 'example',
+        title: 'Anwendungsbeispiele',
+        text: 'Handy-Ladegerät, Haarföhn, Akkuschrauber, viele Elektrowerkzeuge'
+      }
+    ]
   },
   {
     id: "schutzklasse-3",
+    sectionId: "schutzklassen",
     title: "Schutzklasse III",
     image: "/images/schutzklasse3.png",
-    description: "Schutzklasse III arbeitet mit Schutzkleinspannung (SELV/PELV). Die Betriebsspannung beträgt maximal 50V AC oder 120V DC. Die Speisung erfolgt über einen Sicherheitstransformator. Durch die niedrige Spannung besteht keine Gefahr eines elektrischen Schlags. Symbol: Drei ineinander liegende Quadrate oder 'III'.",
-    example: "LED-Lampen 12V, Spielzeug, Klingeltransformatoren, Gartenbeleuchtung",
-    category: "schutzkonzepte",
-    subcategory: "schutzklassen",
+    content: [
+      {
+        type: 'definition',
+        text: 'Schutzklasse III arbeitet mit Schutzkleinspannung (SELV/PELV). Die Betriebsspannung beträgt maximal 50V AC oder 120V DC.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Die Speisung erfolgt über einen Sicherheitstransformator. Durch die niedrige Spannung besteht keine Gefahr eines elektrischen Schlags. Symbol: Drei ineinander liegende Quadrate oder "III".'
+      },
+      {
+        type: 'example',
+        title: 'Anwendungsbeispiele',
+        text: 'LED-Lampen 12V, Spielzeug, Klingeltransformatoren, Gartenbeleuchtung'
+      }
+    ]
   },
   {
     id: "selv-pelv",
+    sectionId: "schutzklassen",
     title: "SELV / PELV",
-    image: "/images/placeholder.png",
-    description: "SELV (Safety Extra Low Voltage) und PELV (Protective Extra Low Voltage) sind Schutzkleinspannungssysteme. SELV hat vollständig isolierte Stromquellen, PELV erlaubt einen geerdeten Pol. SELV: Keine Erdverbindung, höchste Sicherheitsstufe. PELV: Mit Erdverbindung, für Funktionserdung.",
-    example: "Beleuchtung 12V, Spielzeug, medizinische Geräte",
-    category: "schutzkonzepte",
-    subcategory: "schutzklassen",
+    content: [
+      {
+        type: 'definition',
+        text: 'SELV (Safety Extra Low Voltage) und PELV (Protective Extra Low Voltage) sind Schutzkleinspannungssysteme.'
+      },
+      {
+        type: 'table',
+        headers: ['System', 'Beschreibung'],
+        rows: [
+          ['SELV', 'Vollständig isolierte Stromquellen, keine Erdverbindung, höchste Sicherheitsstufe'],
+          ['PELV', 'Erlaubt einen geerdeten Pol, mit Erdverbindung für Funktionserdung']
+        ]
+      },
+      {
+        type: 'example',
+        title: 'Anwendungsbeispiele',
+        text: 'Beleuchtung 12V, Spielzeug, medizinische Geräte'
+      }
+    ]
   },
-  // 1.3 IP-Schutzarten
   {
     id: "ip-schutzarten",
+    sectionId: "ip-schutzarten",
     title: "IP-Schutzarten",
     image: "/images/ip-code.png",
-    description: "Aufbau: Kennzeichnung IP XY. Erste Ziffer = Fremdkörperschutz, zweite Ziffer = Wasserschutz.\n\nDer IP-Code (International Protection) nach DIN EN 60529 gibt den Schutzgrad eines Gehäuses an.",
-    example: "",
-    category: "schutzkonzepte",
-    subcategory: "ip-schutzarten",
+    content: [
+      {
+        type: 'definition',
+        text: 'Der IP-Code (International Protection) nach DIN EN 60529 gibt den Schutzgrad eines Gehäuses an.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Aufbau: Kennzeichnung IP XY. Erste Ziffer = Fremdkörperschutz, zweite Ziffer = Wasserschutz.'
+      }
+    ]
   },
   {
     id: "ip-fremdkoerperschutz",
+    sectionId: "ip-schutzarten",
     title: "IP-Code Erste Ziffer – Fremdkörper- und Berührungsschutz",
-    image: "/images/placeholder.png",
-    description: "Erste Ziffer – Fremdkörper- und Berührungsschutz:\n\n• 0: Kein Schutz\n• 1: Feste Fremdkörper ≥ 50 mm (Handrücken)\n• 2: Feste Fremdkörper ≥ 12,5 mm (Finger)\n• 3: Feste Fremdkörper ≥ 2,5 mm (Werkzeug)\n• 4: Feste Fremdkörper ≥ 1 mm (Draht)\n• 5: Staubgeschützt (Staub kann eindringen, beeinträchtigt Funktion nicht)\n• 6: Staubdicht (kein Staubeintritt)",
-    example: "",
-    category: "schutzkonzepte",
-    subcategory: "ip-schutzarten",
+    content: [
+      {
+        type: 'definition',
+        text: 'Die erste Ziffer des IP-Codes beschreibt den Schutz gegen Fremdkörper und Berührung.'
+      },
+      {
+        type: 'table',
+        headers: ['Code', 'Schutzgrad'],
+        rows: [
+          ['0', 'Kein Schutz'],
+          ['1', 'Feste Fremdkörper ≥ 50 mm (Handrücken)'],
+          ['2', 'Feste Fremdkörper ≥ 12,5 mm (Finger)'],
+          ['3', 'Feste Fremdkörper ≥ 2,5 mm (Werkzeug)'],
+          ['4', 'Feste Fremdkörper ≥ 1 mm (Draht)'],
+          ['5', 'Staubgeschützt (Staub kann eindringen, beeinträchtigt Funktion nicht)'],
+          ['6', 'Staubdicht (kein Staubeintritt)']
+        ]
+      }
+    ]
   },
   {
     id: "ip-wasserschutz",
+    sectionId: "ip-schutzarten",
     title: "IP-Code Zweite Ziffer – Wasserschutz",
-    image: "/images/placeholder.png",
-    description: "Zweite Ziffer – Wasserschutz:\n\n• 0: Kein Schutz\n• 1: Senkrechtes Tropfwasser\n• 2: Tropfwasser bei 15° Neigung\n• 3: Sprühwasser bis 60°\n• 4: Spritzwasser allseitig\n• 5: Strahlwasser (Düse 6,3 mm)\n• 6: Starkes Strahlwasser (Düse 12,5 mm)\n• 7: Zeitweiliges Untertauchen (bis 1 m, 30 min)\n• 8: Dauerhaftes Untertauchen (Tiefe nach Herstellerangabe)\n• 9K: Hochdruck-/Dampfstrahlreinigung (nach ISO 20653)",
-    example: "",
-    category: "schutzkonzepte",
-    subcategory: "ip-schutzarten",
+    content: [
+      {
+        type: 'definition',
+        text: 'Die zweite Ziffer des IP-Codes beschreibt den Schutz gegen Wasser.'
+      },
+      {
+        type: 'table',
+        headers: ['Code', 'Schutzgrad'],
+        rows: [
+          ['0', 'Kein Schutz'],
+          ['1', 'Senkrechtes Tropfwasser'],
+          ['2', 'Tropfwasser bei 15° Neigung'],
+          ['3', 'Sprühwasser bis 60°'],
+          ['4', 'Spritzwasser allseitig'],
+          ['5', 'Strahlwasser (Düse 6,3 mm)'],
+          ['6', 'Starkes Strahlwasser (Düse 12,5 mm)'],
+          ['7', 'Zeitweiliges Untertauchen (bis 1 m, 30 min)'],
+          ['8', 'Dauerhaftes Untertauchen (Tiefe nach Herstellerangabe)'],
+          ['9K', 'Hochdruck-/Dampfstrahlreinigung (nach ISO 20653)']
+        ]
+      }
+    ]
   },
   {
     id: "ip-praxisbeispiele",
+    sectionId: "ip-schutzarten",
     title: "IP-Schutzarten Praxisbeispiele",
-    image: "/images/placeholder.png",
-    description: "Praxisbeispiele:\n• IP20 = Schaltschrank innen\n• IP44 = Außenbereich, Spritzwasser geschützt\n• IP54 = Staubgeschützt, Spritzwasser\n• IP65 = Staubdicht, Strahlwasser\n• IP67 = Staubdicht, Untertauchen bis 1m\n• IP68 = Staubdicht, dauerhaftes Untertauchen",
-    example: "IP20 (Innenbereich), IP44 (Bad), IP65 (Aussen), IP67 (Untertauchen)",
-    category: "schutzkonzepte",
-    subcategory: "ip-schutzarten",
+    content: [
+      {
+        type: 'definition',
+        text: 'Häufig verwendete IP-Schutzarten in der Praxis.'
+      },
+      {
+        type: 'table',
+        headers: ['IP-Code', 'Anwendung'],
+        rows: [
+          ['IP20', 'Schaltschrank innen'],
+          ['IP44', 'Außenbereich, Spritzwasser geschützt'],
+          ['IP54', 'Staubgeschützt, Spritzwasser'],
+          ['IP65', 'Staubdicht, Strahlwasser'],
+          ['IP67', 'Staubdicht, Untertauchen bis 1m'],
+          ['IP68', 'Staubdicht, dauerhaftes Untertauchen']
+        ]
+      },
+      {
+        type: 'example',
+        title: 'Typische Anwendungen',
+        text: 'IP20 (Innenbereich), IP44 (Bad), IP65 (Außen), IP67 (Untertauchen)'
+      }
+    ]
   },
   {
     id: "nullung",
+    sectionId: "sicherheitskonzepte",
     title: "Nullung (Schutzerdung)",
-    image: "/images/placeholder.png",
-    description: "Nullung ist eine Schutzmaßnahme, bei der alle berührbaren leitfähigen Teile mit dem Neutralleiter (PEN) oder Schutzleiter (PE) verbunden werden.",
-    example: "Schutzleiterverbindung",
-    category: "schutzkonzepte",
-    subcategory: "sicherheitskonzepte",
+    content: [
+      {
+        type: 'definition',
+        text: 'Nullung ist eine Schutzmaßnahme, bei der alle berührbaren leitfähigen Teile mit dem Neutralleiter (PEN) oder Schutzleiter (PE) verbunden werden.'
+      },
+      {
+        type: 'example',
+        title: 'Anwendung',
+        text: 'Schutzleiterverbindung'
+      }
+    ]
   },
   {
     id: "galvanische-trennung",
+    sectionId: "sicherheitskonzepte",
     title: "Galvanische Trennung",
-    image: "/images/placeholder.png",
-    description: "Definition: Zwei Stromkreise ohne leitende (galvanische) Verbindung. Es besteht keine direkte elektrische Verbindung zwischen den Kreisen.\n\nPrimärseite: Die Eingangsseite, die mit der Energiequelle (z.B. Netz 230 V) verbunden ist. Hier wird Energie eingespeist.\n\nSekundärseite: Die Ausgangsseite, die den Verbraucher versorgt. Sie ist von der Primärseite galvanisch getrennt.\n\nWichtig: Zwischen Primär- und Sekundärseite besteht KEINE leitende Verbindung. Die Energieübertragung erfolgt durch magnetische, optische oder mechanische Kopplung.\n\nRealisierung der galvanischen Trennung:\n• Transformator – Energie wird über magnetische Kopplung übertragen\n• Optokoppler – Signal wird über Licht übertragen (LED → Fototransistor)\n• Relais – Signal wird mechanisch übertragen. Spule und Kontakte sind elektrisch getrennt.",
-    example: "Netzteil, Medizintechnik (Patientenschutz), Messgeräte, SPS-Eingänge",
-    category: "schutzkonzepte",
-    subcategory: "sicherheitskonzepte",
+    content: [
+      {
+        type: 'definition',
+        text: 'Zwei Stromkreise ohne leitende (galvanische) Verbindung. Es besteht keine direkte elektrische Verbindung zwischen den Kreisen.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Primärseite: Die Eingangsseite, die mit der Energiequelle (z.B. Netz 230 V) verbunden ist. Hier wird Energie eingespeist.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Sekundärseite: Die Ausgangsseite, die den Verbraucher versorgt. Sie ist von der Primärseite galvanisch getrennt.'
+      },
+      {
+        type: 'warning',
+        text: 'Zwischen Primär- und Sekundärseite besteht KEINE leitende Verbindung. Die Energieübertragung erfolgt durch magnetische, optische oder mechanische Kopplung.'
+      },
+      {
+        type: 'list',
+        title: 'Realisierung der galvanischen Trennung',
+        items: [
+          'Transformator – Energie wird über magnetische Kopplung übertragen',
+          'Optokoppler – Signal wird über Licht übertragen (LED → Fototransistor)',
+          'Relais – Signal wird mechanisch übertragen. Spule und Kontakte sind elektrisch getrennt'
+        ]
+      },
+      {
+        type: 'example',
+        title: 'Anwendungsbeispiele',
+        text: 'Netzteil, Medizintechnik (Patientenschutz), Messgeräte, SPS-Eingänge'
+      }
+    ]
   },
   {
     id: "schutztrennung",
+    sectionId: "sicherheitskonzepte",
     title: "Schutztrennung",
-    image: "/images/placeholder.png",
-    description: "Aufbau: Galvanische Trennung vom Netz durch Trenntransformator. Sekundärseite ist erdfrei.\n\nFunktionsweise: Bei Berührung eines Außenleiters kann kein Strom über den Körper zur Erde fließen, da kein geschlossener Stromkreis entsteht.\n\nAnwendung: Rasiersteckdosen in Badezimmern, Baustellentransformatoren, Werkstätten.\n\nWichtig: Nur EIN Verbraucher pro Sekundärwicklung. Keine Erdung der Sekundärseite.",
-    example: "Rasiersteckdose im Bad, Baustellentransformator",
-    category: "schutzkonzepte",
-    subcategory: "sicherheitskonzepte",
+    content: [
+      {
+        type: 'definition',
+        text: 'Galvanische Trennung vom Netz durch Trenntransformator. Sekundärseite ist erdfrei.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Funktionsweise: Bei Berührung eines Außenleiters kann kein Strom über den Körper zur Erde fließen, da kein geschlossener Stromkreis entsteht.'
+      },
+      {
+        type: 'list',
+        title: 'Anwendung',
+        items: [
+          'Rasiersteckdosen in Badezimmern',
+          'Baustellentransformatoren',
+          'Werkstätten'
+        ]
+      },
+      {
+        type: 'warning',
+        text: 'Nur EIN Verbraucher pro Sekundärwicklung. Keine Erdung der Sekundärseite.'
+      },
+      {
+        type: 'example',
+        title: 'Beispiele',
+        text: 'Rasiersteckdose im Bad, Baustellentransformator'
+      }
+    ]
   },
   {
     id: "rcd",
+    sectionId: "sicherheitskonzepte",
     title: "RCD / FI-Schutzschalter",
     image: "/images/rcd.png",
-    description: "Der RCD (Residual Current Device) oder FI-Schutzschalter schützt Personen vor elektrischem Schlag. Aufbau: Summenstromwandler (Ringkern), Auslösemechanik, Schaltkontakte, Prüftaste. Funktionsweise: Alle aktiven Leiter (L und N) führen durch den Summenstromwandler. Im Normalbetrieb ist die Stromsumme null. Bei Fehlerstrom entsteht eine Differenz → Auslösung. Auslöseströme: 30mA (Personenschutz), 10mA (erhöhter Schutz), 300mA/500mA (Brandschutz). Typen: AC (veraltet), A (Standard), F (Frequenzumrichter), B (PV, E-Mobilität).",
-    example: "Typ A für Haushaltsgeräte, Typ B für Frequenzumrichter, Typ AC veraltet",
-    category: "schutzkonzepte",
-    subcategory: "sicherheitskonzepte",
-  },
+    content: [
+      {
+        type: 'definition',
+        text: 'Der RCD (Residual Current Device) oder FI-Schutzschalter schützt Personen vor elektrischem Schlag.'
+      },
+      {
+        type: 'list',
+        title: 'Aufbau',
+        items: [
+          'Summenstromwandler (Ringkern)',
+          'Auslösemechanik',
+          'Schaltkontakte',
+          'Prüftaste'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Funktionsweise: Alle aktiven Leiter (L und N) führen durch den Summenstromwandler. Im Normalbetrieb ist die Stromsumme null. Bei Fehlerstrom entsteht eine Differenz → Auslösung.'
+      },
+      {
+        type: 'table',
+        headers: ['Auslösestrom', 'Anwendung'],
+        rows: [
+          ['10 mA', 'Erhöhter Schutz'],
+          ['30 mA', 'Personenschutz'],
+          ['300 mA / 500 mA', 'Brandschutz']
+        ]
+      },
+      {
+        type: 'table',
+        headers: ['Typ', 'Anwendung', 'Status'],
+        rows: [
+          ['AC', 'Veraltet', 'Nicht mehr empfohlen'],
+          ['A', 'Standard', 'Haushaltsgeräte'],
+          ['F', 'Frequenzumrichter', 'Spezialanwendung'],
+          ['B', 'PV, E-Mobilität', 'Gleichstromanteile']
+        ]
+      },
+      {
+        type: 'example',
+        title: 'Typische Anwendungen',
+        text: 'Typ A für Haushaltsgeräte, Typ B für Frequenzumrichter, Typ AC veraltet'
+      }
+    ]
+  }
 ];
 
-export const entries: Entry[] = oldTerms.map(term => {
-  const sectionId = subcategoryToSectionMap[term.subcategory || ''] || 'schutzklassen';
-  
-  return {
-    id: term.id,
-    sectionId,
-    title: term.title,
-    content: createContentBlocks(term.description, term.example),
-    image: term.image !== "/images/placeholder.png" ? term.image : undefined,
-  };
-});
+export const entries: Entry[] = entriesData.map(entry => ({
+  id: entry.id,
+  sectionId: entry.sectionId,
+  title: entry.title,
+  content: entry.content,
+  image: entry.image
+}));
