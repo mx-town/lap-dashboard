@@ -62,7 +62,7 @@ export function MainLayout({ children, categories, searchIndex }: MainLayoutProp
   return (
     <div className="h-screen w-full flex flex-col bg-white overflow-hidden">
       {/* Header */}
-      <header className="pl-4 lg:pl-0 h-11 w-full lg:flex-row flex-row-reverse flex border-b border-border-subtle bg-white flex-shrink-0">
+      <header className="fixed top-0 left-0 right-0 z-50 lg:static pl-4 lg:pl-0 h-11 w-full lg:flex-row flex-row-reverse flex border-b border-border-subtle bg-white flex-shrink-0">
         <div className="w-72 flex-1 lg:flex-[unset] lg:flex-shrink-0 h-full flex items-center lg:px-5 border-r border-border-subtle">
           <Link href="/" className="text-sm font-medium text-text-primary hover:text-accent-primary transition-colors">
             Mechatronik Lexikon
@@ -102,7 +102,7 @@ export function MainLayout({ children, categories, searchIndex }: MainLayoutProp
       </header>
 
       {/* Body */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden pt-11 lg:pt-0">
         {/* Desktop sidebar */}
         <aside className="hidden lg:block w-72 h-full overflow-y-auto scrollbar-hide border-r border-border-subtle bg-white flex-shrink-0">
           <div className="p-4">
