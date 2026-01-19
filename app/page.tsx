@@ -9,16 +9,16 @@ export default function HomePage() {
       {categories.map(cat => (
         <section key={cat.id} id={cat.id} className="space-y-12">
           <header className="border-b border-border-subtle pb-4">
-            <span className="font-mono text-sm text-text-muted">{cat.number}.</span>
-            <h1 className="text-3xl font-bold text-text-primary">{cat.title}</h1>
+            <h1 className="text-3xl font-bold text-text-primary">
+              <span className="font-mono mr-2">{cat.number}.</span>{cat.title}
+            </h1>
             <p className="text-text-secondary mt-1">{cat.subtitle}</p>
           </header>
 
           {getSectionsByCategory(cat.id).map(sec => (
             <div key={sec.id} id={sec.id} className="space-y-8 scroll-mt-6">
               <h2 className="text-xl font-semibold text-text-primary">
-                <span className="font-mono text-text-muted mr-2">{sec.number}</span>
-                {sec.title}
+                <span className="font-mono mr-2">{sec.number}</span>{sec.title}
               </h2>
 
               <div className="space-y-10">

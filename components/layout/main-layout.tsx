@@ -66,7 +66,7 @@ export function MainLayout({ children }: MainLayoutProps) {
       {/* Body */}
       <div className="flex flex-1 overflow-hidden">
         {/* Desktop sidebar */}
-        <aside className="hidden lg:block w-72 h-full overflow-y-auto border-r border-border-subtle bg-white flex-shrink-0">
+        <aside className="hidden lg:block w-72 h-full overflow-y-auto scrollbar-hide border-r border-border-subtle bg-white flex-shrink-0">
           <div className="p-4">
             <CategoryTree
               categories={categories}

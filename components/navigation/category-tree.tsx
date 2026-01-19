@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import type { Category, Section } from "@/data"
 import { getSectionsByCategory } from "@/data"
 import { cn } from "@/lib/utils"
@@ -13,6 +13,17 @@ interface CategoryTreeProps {
 export function CategoryTree({ categories, sections }: CategoryTreeProps) {
   const [activeSection, setActiveSection] = useState<string | null>(null)
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
+  const sectionRefs = useRef<Map<string, HTMLAnchorElement>>(new Map())
+
+  // Auto-scroll sidebar to keep active section visible
+  useEffect(() => {
+    if (activeSection) {
+      const el = sectionRefs.current.get(activeSection)
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+      }
+    }
+  }, [activeSection])
 
   // IntersectionObserver to track visible section
   useEffect(() => {
@@ -58,12 +69,8 @@ export function CategoryTree({ categories, sections }: CategoryTreeProps) {
                   : "text-text-secondary hover:text-text-primary"
               )}
             >
-              <span className="flex-1 text-left flex items-center gap-2.5">
-                <span className="font-mono text-xs font-semibold text-text-muted">
-                  {category.number}.
-                </span>
-                <span>{category.title}</span>
-              </span>
+              <span className="font-mono w-5">{category.number}.</span>
+              <span className="flex-1 text-left">{category.title}</span>
             </a>
 
             <div className="ml-8 mt-1 space-y-0.5">
@@ -72,6 +79,9 @@ export function CategoryTree({ categories, sections }: CategoryTreeProps) {
                 return (
                   <a
                     key={section.id}
+                    ref={(el) => {
+                      if (el) sectionRefs.current.set(section.id, el)
+                    }}
                     href={`#${section.id}`}
                     className={cn(
                       "flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-all",
@@ -81,9 +91,7 @@ export function CategoryTree({ categories, sections }: CategoryTreeProps) {
                         : "text-text-secondary hover:text-text-primary"
                     )}
                   >
-                    <span className="font-mono text-xs text-text-muted flex-shrink-0">
-                      {section.number}
-                    </span>
+                    <span className="font-mono w-8 flex-shrink-0">{section.number}</span>
                     <span className="flex-1">{section.title}</span>
                   </a>
                 )
