@@ -1,3 +1,10 @@
+---
+id: regelungs-steuerungstechnik-sps
+number: 9
+title: Regelungs-/Steuerungstechnik/SPS
+subtitle: SPS-Programmierung und Steuerungskonzepte
+---
+
 # 9. Regelungs-/Steuerungstechnik/SPS
 
 SPS-Programmierung und Steuerungskonzepte

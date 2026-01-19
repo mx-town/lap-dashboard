@@ -1,3 +1,10 @@
+---
+id: kabel-leitungen-stecker
+number: 5
+title: Kabel/Leitungen/Stecker
+subtitle: Kabeltypen, Leitungen und Steckverbinder
+---
+
 # 5. Kabel/Leitungen/Stecker
 
 Kabeltypen, Leitungen und Steckverbinder

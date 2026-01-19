@@ -1,61 +1,75 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import type { Category, Section } from "@/data"
-import { getSectionsByCategory } from "@/data"
 import { cn } from "@/lib/utils"
 
-interface CategoryTreeProps {
-  categories: Category[]
-  sections: Section[]
+interface HeadingNode {
+  id: string
+  text: string
+  level: 2 | 3
 }
 
-export function CategoryTree({ categories, sections }: CategoryTreeProps) {
-  const [activeSection, setActiveSection] = useState<string | null>(null)
-  const [activeCategory, setActiveCategory] = useState<string | null>(null)
-  const sectionRefs = useRef<Map<string, HTMLAnchorElement>>(new Map())
+interface CategoryData {
+  id: string
+  number: number
+  title: string
+  headings: HeadingNode[]
+}
 
-  // Auto-scroll sidebar to keep active section visible
+interface CategoryTreeProps {
+  categories: CategoryData[]
+}
+
+export function CategoryTree({ categories }: CategoryTreeProps) {
+  const [activeHeading, setActiveHeading] = useState<string | null>(null)
+  const [activeCategory, setActiveCategory] = useState<string | null>(null)
+  const headingRefs = useRef<Map<string, HTMLAnchorElement>>(new Map())
+
+  // Auto-scroll sidebar to keep active heading visible
   useEffect(() => {
-    if (activeSection) {
-      const el = sectionRefs.current.get(activeSection)
+    if (activeHeading) {
+      const el = headingRefs.current.get(activeHeading)
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
       }
     }
-  }, [activeSection])
+  }, [activeHeading])
 
-  // IntersectionObserver to track visible section
+  // IntersectionObserver to track visible heading
   useEffect(() => {
+    const allHeadings = categories.flatMap(cat =>
+      cat.headings.filter(h => h.level === 2).map(h => ({ ...h, categoryId: cat.id }))
+    )
+
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries.find(e => e.isIntersecting)
         if (visible) {
-          const sectionId = visible.target.id
-          setActiveSection(sectionId)
+          const headingId = visible.target.id
+          setActiveHeading(headingId)
 
-          const section = sections.find(s => s.id === sectionId)
-          if (section) {
-            setActiveCategory(section.categoryId)
+          const heading = allHeadings.find(h => h.id === headingId)
+          if (heading) {
+            setActiveCategory(heading.categoryId)
           }
         }
       },
       { rootMargin: '-20% 0px -60% 0px' }
     )
 
-    sections.forEach(sec => {
-      const el = document.getElementById(sec.id)
+    allHeadings.forEach(heading => {
+      const el = document.getElementById(heading.id)
       if (el) observer.observe(el)
     })
 
     return () => observer.disconnect()
-  }, [sections])
+  }, [categories])
 
   return (
     <nav className="space-y-1">
       {categories.map((category) => {
-        const categorySections = getSectionsByCategory(category.id)
         const isActive = category.id === activeCategory
+        const sectionHeadings = category.headings.filter(h => h.level === 2)
 
         return (
           <div key={category.id}>
@@ -74,25 +88,30 @@ export function CategoryTree({ categories, sections }: CategoryTreeProps) {
             </a>
 
             <div className="ml-8 mt-1 space-y-0.5">
-              {categorySections.map((section) => {
-                const isSectionActive = section.id === activeSection
+              {sectionHeadings.map((heading) => {
+                const isHeadingActive = heading.id === activeHeading
+                // Extract section number from heading text (e.g., "1.1 Basisschutz" -> "1.1")
+                const numberMatch = heading.text.match(/^([\d.]+)/)
+                const sectionNumber = numberMatch ? numberMatch[1] : ''
+                const sectionTitle = heading.text.replace(/^[\d.]+\s*/, '')
+
                 return (
                   <a
-                    key={section.id}
+                    key={heading.id}
                     ref={(el) => {
-                      if (el) sectionRefs.current.set(section.id, el)
+                      if (el) headingRefs.current.set(heading.id, el)
                     }}
-                    href={`#${section.id}`}
+                    href={`#${heading.id}`}
                     className={cn(
                       "flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-all",
                       "hover:bg-bg-secondary",
-                      isSectionActive
+                      isHeadingActive
                         ? "bg-accent-primary/10 text-accent-primary font-medium"
                         : "text-text-secondary hover:text-text-primary"
                     )}
                   >
-                    <span className="font-mono w-8 flex-shrink-0">{section.number}</span>
-                    <span className="flex-1">{section.title}</span>
+                    <span className="font-mono w-8 flex-shrink-0">{sectionNumber}</span>
+                    <span className="flex-1">{sectionTitle}</span>
                   </a>
                 )
               })}

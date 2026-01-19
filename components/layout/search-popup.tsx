@@ -2,8 +2,28 @@
 
 import { useEffect, useMemo, useState, useRef } from "react"
 import Fuse from "fuse.js"
-import { entries, getCategoryById, getSectionById } from "@/data"
 import { Search } from "lucide-react"
+
+interface HeadingNode {
+  id: string
+  text: string
+  level: 2 | 3
+}
+
+interface CategoryData {
+  id: string
+  number: number
+  title: string
+  headings: HeadingNode[]
+}
+
+interface SearchEntry {
+  id: string
+  title: string
+  categoryId: string
+  categoryTitle: string
+  categoryNumber: number
+}
 
 interface SearchPopupProps {
   query: string
@@ -11,28 +31,43 @@ interface SearchPopupProps {
   isOpen: boolean
   onClose: () => void
   onResultSelect?: () => void
+  categories: CategoryData[]
 }
 
-export function SearchPopup({ query, onQueryChange, isOpen, onClose, onResultSelect }: SearchPopupProps) {
+export function SearchPopup({
+  query,
+  onQueryChange,
+  isOpen,
+  onClose,
+  onResultSelect,
+  categories,
+}: SearchPopupProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [selectedIndex, setSelectedIndex] = useState(0)
 
+  // Build search index from categories and their headings
+  const searchEntries = useMemo(() => {
+    return categories.flatMap((cat) =>
+      cat.headings
+        .filter((h) => h.level === 2)
+        .map((heading) => ({
+          id: heading.id,
+          title: heading.text,
+          categoryId: cat.id,
+          categoryTitle: cat.title,
+          categoryNumber: cat.number,
+        }))
+    )
+  }, [categories])
+
   const fuse = useMemo(
     () =>
-      new Fuse(entries, {
-        keys: [
-          "title",
-          { name: "content", getFn: (entry) =>
-            entry.content.map((block: any) =>
-              block.type === 'paragraph' || block.type === 'definition' ? block.text :
-              block.type === 'list' ? block.items?.join(' ') : ''
-            ).filter(Boolean).join(' ')
-          }
-        ],
+      new Fuse(searchEntries, {
+        keys: ["title", "categoryTitle"],
         threshold: 0.3,
         includeScore: true,
       }),
-    []
+    [searchEntries]
   )
 
   const searchResults = useMemo(() => {
@@ -53,12 +88,10 @@ export function SearchPopup({ query, onQueryChange, isOpen, onClose, onResultSel
   }, [query])
 
   const navigateToEntry = (entryId: string) => {
-    // Scroll to the entry using anchor
     const element = document.getElementById(entryId)
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      // Update URL hash without full navigation
-      window.history.pushState(null, '', `#${entryId}`)
+      element.scrollIntoView({ behavior: "smooth", block: "start" })
+      window.history.pushState(null, "", `#${entryId}`)
     }
     onQueryChange("")
     onResultSelect?.()
@@ -112,30 +145,23 @@ export function SearchPopup({ query, onQueryChange, isOpen, onClose, onResultSel
             <div className="max-h-96 overflow-y-auto">
               {searchResults.length > 0 ? (
                 <ul className="py-2">
-                  {searchResults.map((entry, index) => {
-                    const section = getSectionById(entry.sectionId)
-                    const category = section ? getCategoryById(section.categoryId) : null
-
-                    return (
-                      <li key={entry.id}>
-                        <button
-                          onClick={() => navigateToEntry(entry.id)}
-                          className={`w-full text-left block px-4 py-3 hover:bg-bg-secondary transition-colors ${
-                            index === selectedIndex ? "bg-bg-secondary" : ""
-                          }`}
-                        >
-                          <div className="font-semibold text-text-primary mb-1">
-                            {entry.title}
-                          </div>
-                          {category && section && (
-                            <div className="text-sm text-text-muted">
-                              {category.title} → {section.title}
-                            </div>
-                          )}
-                        </button>
-                      </li>
-                    )
-                  })}
+                  {searchResults.map((entry, index) => (
+                    <li key={entry.id}>
+                      <button
+                        onClick={() => navigateToEntry(entry.id)}
+                        className={`w-full text-left block px-4 py-3 hover:bg-bg-secondary transition-colors ${
+                          index === selectedIndex ? "bg-bg-secondary" : ""
+                        }`}
+                      >
+                        <div className="font-semibold text-text-primary mb-1">
+                          {entry.title}
+                        </div>
+                        <div className="text-sm text-text-muted">
+                          {entry.categoryNumber}. {entry.categoryTitle}
+                        </div>
+                      </button>
+                    </li>
+                  ))}
                 </ul>
               ) : (
                 <div className="py-8 text-center text-text-muted">

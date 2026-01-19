@@ -1,3 +1,10 @@
+---
+id: netzsysteme
+number: 10
+title: Netzsysteme
+subtitle: TN, TT, IT-Systeme und Netzformen
+---
+
 # 10. Netzsysteme
 
 TN, TT, IT-Systeme und Netzformen

@@ -1,3 +1,10 @@
+---
+id: et-gesetze
+number: 2
+title: ET Gesetze
+subtitle: Elektrotechnische Gesetze und Grundlagen
+---
+
 # 2. ET Gesetze
 
 Elektrotechnische Gesetze und Grundlagen

@@ -1,3 +1,10 @@
+---
+id: mechanisches-messen-pruefen
+number: 7
+title: Mechanisches Messen/Prüfen
+subtitle: Messmittel und Prüfverfahren
+---
+
 # 7. Mechanisches Messen/Prüfen
 
 Messmittel und Prüfverfahren

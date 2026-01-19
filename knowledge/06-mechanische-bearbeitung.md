@@ -1,3 +1,10 @@
+---
+id: mechanische-bearbeitung
+number: 6
+title: Mechanische Bearbeitung
+subtitle: Fertigungsverfahren und Werkzeuge
+---
+
 # 6. Mechanische Bearbeitung
 
 Fertigungsverfahren und Werkzeuge

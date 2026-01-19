@@ -1,3 +1,10 @@
+---
+id: schutzkonzepte
+number: 1
+title: Schutzkonzepte
+subtitle: Schutzklassen, Schutzarten und Sicherheitskonzepte
+---
+
 # 1. Schutzkonzepte
 
 Schutzklassen, Schutzarten und Sicherheitskonzepte

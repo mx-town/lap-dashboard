@@ -1,3 +1,10 @@
+---
+id: schaltkasten
+number: 3
+title: Schaltkasten
+subtitle: Aufbau und Verdrahtung von Schaltschränken
+---
+
 # 3. Schaltkasten
 
 Aufbau und Verdrahtung von Schaltschränken

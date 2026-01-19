@@ -3,15 +3,28 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Search, Menu, X } from "lucide-react"
-import { categories, sections } from "@/data"
 import { CategoryTree } from "@/components/navigation/category-tree"
 import { SearchPopup } from "./search-popup"
 
-interface MainLayoutProps {
-  children: React.ReactNode
+interface HeadingNode {
+  id: string
+  text: string
+  level: 2 | 3
 }
 
-export function MainLayout({ children }: MainLayoutProps) {
+interface CategoryData {
+  id: string
+  number: number
+  title: string
+  headings: HeadingNode[]
+}
+
+interface MainLayoutProps {
+  children: React.ReactNode
+  categories: CategoryData[]
+}
+
+export function MainLayout({ children, categories }: MainLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [searchOpen, setSearchOpen] = useState(false)
@@ -68,10 +81,7 @@ export function MainLayout({ children }: MainLayoutProps) {
         {/* Desktop sidebar */}
         <aside className="hidden lg:block w-72 h-full overflow-y-auto scrollbar-hide border-r border-border-subtle bg-white flex-shrink-0">
           <div className="p-4">
-            <CategoryTree
-              categories={categories}
-              sections={sections}
-            />
+            <CategoryTree categories={categories} />
           </div>
         </aside>
 
@@ -97,10 +107,7 @@ export function MainLayout({ children }: MainLayoutProps) {
                   </button>
                 </div>
                 <div className="flex-1 overflow-y-auto px-4 py-4">
-                  <CategoryTree
-                    categories={categories}
-                    sections={sections}
-                  />
+                  <CategoryTree categories={categories} />
                 </div>
               </div>
             </aside>
@@ -121,6 +128,7 @@ export function MainLayout({ children }: MainLayoutProps) {
           setSearchOpen(false)
         }}
         onResultSelect={() => setSearchQuery("")}
+        categories={categories}
       />
     </div>
   )

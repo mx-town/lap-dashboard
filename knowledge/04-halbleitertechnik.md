@@ -1,3 +1,10 @@
+---
+id: halbleitertechnik
+number: 4
+title: Halbleitertechnik
+subtitle: Dioden, Transistoren und Halbleiterbauelemente
+---
+
 # 4. Halbleitertechnik
 
 Dioden, Transistoren und Halbleiterbauelemente

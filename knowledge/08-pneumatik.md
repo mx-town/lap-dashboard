@@ -1,3 +1,10 @@
+---
+id: pneumatik
+number: 8
+title: Pneumatik
+subtitle: Pneumatische Antriebe und Steuerungen
+---
+
 # 8. Pneumatik
 
 Pneumatische Antriebe und Steuerungen
