@@ -6,6 +6,7 @@ import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import rehypeSlug from 'rehype-slug'
+import GithubSlugger from 'github-slugger'
 import { mdxComponents } from '@/components/mdx/mdx-components'
 
 export interface HeadingNode {
@@ -32,40 +33,34 @@ export interface SearchEntry {
   sectionNumber: string
 }
 
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[äÄ]/g, 'ae')
-    .replace(/[öÖ]/g, 'oe')
-    .replace(/[üÜ]/g, 'ue')
-    .replace(/ß/g, 'ss')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '')
-}
-
 function extractHeadings(markdown: string): HeadingNode[] {
   const headings: HeadingNode[] = []
+  const slugger = new GithubSlugger()
   const lines = markdown.split('\n')
-  
+
   for (const line of lines) {
+    // Process h1 to keep slugger state in sync with rehype-slug, but don't include in output
+    const h1Match = line.match(/^# (.+)$/)
     const h2Match = line.match(/^## (.+)$/)
     const h3Match = line.match(/^### (.+)$/)
-    
-    if (h2Match) {
+
+    if (h1Match) {
+      slugger.slug(h1Match[1]) // Process but don't output
+    } else if (h2Match) {
       headings.push({
-        id: slugify(h2Match[1]),
+        id: slugger.slug(h2Match[1]),
         text: h2Match[1],
         level: 2,
       })
     } else if (h3Match) {
       headings.push({
-        id: slugify(h3Match[1]),
+        id: slugger.slug(h3Match[1]),
         text: h3Match[1],
         level: 3,
       })
     }
   }
-  
+
   return headings
 }
 
