@@ -86,32 +86,32 @@ export function SearchPopup({ query, onQueryChange, isOpen, onClose, onResultSel
     <>
       {/* Overlay */}
       <div
-        className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
+        className="fixed inset-0 bg-black/10 z-40"
         onClick={onClose}
       />
 
       {/* Popup */}
-      <div className="fixed top-20 left-1/2 transform -translate-x-1/2 w-full max-w-2xl z-50 px-4">
-        <div className="bg-white rounded-2xl shadow-2xl border border-border-subtle overflow-hidden">
+      <div className="fixed top-16 left-1/2 transform -translate-x-1/2 w-full max-w-lg z-50 px-4">
+        <div className="bg-white rounded-lg shadow-lg border border-border-subtle overflow-hidden">
           {/* Search Input */}
-          <div className="relative p-4 border-b border-border-subtle bg-gradient-to-r from-bg-secondary/50 to-white">
-            <Search className="absolute left-7 top-1/2 transform -translate-y-1/2 text-accent-primary w-5 h-5 pointer-events-none" />
+          <div className="relative p-3 border-b border-border-subtle">
+            <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-text-muted w-4 h-4 pointer-events-none" />
             <input
               ref={inputRef}
               type="text"
-              placeholder="Begriff suchen..."
+              placeholder="Suchen..."
               value={query}
               onChange={(e) => onQueryChange(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="w-full pl-12 pr-4 py-3 bg-white border border-border-subtle rounded-xl text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent-primary/30 focus:border-accent-primary/50 shadow-sm"
+              className="w-full pl-10 pr-4 py-2 text-sm bg-transparent text-text-primary placeholder:text-text-muted focus:outline-none"
             />
           </div>
 
           {/* Results */}
           {query.trim() && (
-            <div className="max-h-96 overflow-y-auto">
+            <div className="max-h-80 overflow-y-auto">
               {searchResults.length > 0 ? (
-                <ul className="py-2">
+                <ul className="py-1">
                   {searchResults.map((entry, index) => {
                     const section = getSectionById(entry.sectionId)
                     const category = section ? getCategoryById(section.categoryId) : null
@@ -120,21 +120,18 @@ export function SearchPopup({ query, onQueryChange, isOpen, onClose, onResultSel
                       <li key={entry.id}>
                         <button
                           onClick={() => navigateToEntry(entry.id)}
-                          className={`w-full text-left block px-5 py-3.5 transition-all border-l-2 ${
+                          className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
                             index === selectedIndex
-                              ? "bg-accent-primary/5 border-l-accent-primary"
-                              : "border-l-transparent hover:bg-bg-secondary hover:border-l-accent-primary/50"
+                              ? "bg-bg-secondary"
+                              : "hover:bg-bg-secondary/50"
                           }`}
                         >
-                          <div className="font-semibold text-text-primary mb-1 flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-accent-primary/50"></span>
+                          <div className="font-medium text-text-primary">
                             {entry.title}
                           </div>
                           {category && section && (
-                            <div className="text-sm text-text-muted ml-3.5 flex items-center gap-1.5">
-                              <span className="font-medium text-text-secondary">{category.title}</span>
-                              <span className="text-accent-primary/50">→</span>
-                              <span>{section.title}</span>
+                            <div className="text-xs text-text-muted mt-0.5">
+                              {category.title} → {section.title}
                             </div>
                           )}
                         </button>
@@ -143,10 +140,8 @@ export function SearchPopup({ query, onQueryChange, isOpen, onClose, onResultSel
                   })}
                 </ul>
               ) : (
-                <div className="py-12 text-center text-text-muted">
-                  <div className="text-5xl mb-3 opacity-50">🔍</div>
-                  <p className="text-sm">Keine Ergebnisse gefunden</p>
-                  <p className="text-xs mt-1 text-text-light">Versuchen Sie einen anderen Suchbegriff</p>
+                <div className="py-8 text-center text-text-muted text-sm">
+                  Keine Ergebnisse
                 </div>
               )}
             </div>
@@ -154,19 +149,13 @@ export function SearchPopup({ query, onQueryChange, isOpen, onClose, onResultSel
 
           {/* Footer hint */}
           {!query.trim() && (
-            <div className="py-6 px-5 text-center text-text-muted border-t border-border-subtle/50 bg-bg-secondary/30">
-              <p className="text-sm">Geben Sie einen Begriff ein, um zu suchen</p>
-              <p className="text-xs mt-1.5 text-text-light">
-                <kbd className="px-1.5 py-0.5 bg-white border border-border-subtle rounded text-xs mr-1">↑</kbd>
-                <kbd className="px-1.5 py-0.5 bg-white border border-border-subtle rounded text-xs mr-1">↓</kbd>
-                zum Navigieren
-                <span className="mx-2">|</span>
-                <kbd className="px-1.5 py-0.5 bg-white border border-border-subtle rounded text-xs mr-1">Enter</kbd>
-                zum Auswählen
-                <span className="mx-2">|</span>
-                <kbd className="px-1.5 py-0.5 bg-white border border-border-subtle rounded text-xs">Esc</kbd>
-                zum Schließen
-              </p>
+            <div className="py-4 px-4 text-center text-text-muted text-xs">
+              <kbd className="px-1 py-0.5 bg-bg-secondary border border-border-subtle rounded text-xs">↑↓</kbd>
+              {" "}navigieren{" "}
+              <kbd className="px-1 py-0.5 bg-bg-secondary border border-border-subtle rounded text-xs ml-2">Enter</kbd>
+              {" "}auswählen{" "}
+              <kbd className="px-1 py-0.5 bg-bg-secondary border border-border-subtle rounded text-xs ml-2">Esc</kbd>
+              {" "}schließen
             </div>
           )}
         </div>

@@ -5,14 +5,14 @@ interface TableBlockProps {
 
 export function TableBlock({ headers, rows }: TableBlockProps) {
   return (
-    <div className="my-6 overflow-x-auto rounded-xl border border-border-subtle shadow-sm">
-      <table className="w-full border-collapse">
+    <div className="my-4 overflow-x-auto">
+      <table className="w-full text-sm">
         <thead>
-          <tr className="bg-gradient-to-r from-bg-secondary to-bg-tertiary/50 border-b border-border-subtle">
+          <tr className="border-b border-border-subtle">
             {headers.map((header, idx) => (
               <th
                 key={idx}
-                className="px-4 py-3.5 text-left text-xs font-bold text-text-primary uppercase tracking-wider border-r border-border-subtle/50 last:border-r-0"
+                className="px-3 py-2 text-left text-xs font-medium text-text-muted uppercase tracking-wide"
               >
                 {header}
               </th>
@@ -23,14 +23,12 @@ export function TableBlock({ headers, rows }: TableBlockProps) {
           {rows.map((row, rowIdx) => (
             <tr
               key={rowIdx}
-              className={`border-b border-border-subtle/50 last:border-b-0 transition-all ${
-                rowIdx % 2 === 0 ? "bg-white" : "bg-bg-secondary/30"
-              } hover:bg-accent-primary/5`}
+              className="border-b border-border-subtle/60 last:border-b-0"
             >
               {row.map((cell, cellIdx) => (
                 <td
                   key={cellIdx}
-                  className="px-4 py-3 text-sm text-text-secondary border-r border-border-subtle/50 last:border-r-0"
+                  className="px-3 py-2 text-text-secondary"
                 >
                   {cell}
                 </td>

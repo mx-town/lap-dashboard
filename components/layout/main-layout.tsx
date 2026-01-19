@@ -30,37 +30,32 @@ export function MainLayout({ children }: MainLayoutProps) {
   }, [])
 
   return (
-    <div className="h-screen w-full flex flex-col bg-bg-primary overflow-hidden">
-      {/* Full-width header */}
-      <header className="h-12 w-full flex border-b border-border-subtle bg-white/95 backdrop-blur-sm flex-shrink-0 shadow-sm">
-        {/* Left: App name (matches sidebar width) */}
-        <div className="w-72 flex-shrink-0 h-full flex items-center px-5 border-r border-border-subtle">
-          <Link href="/" className="group flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center shadow-sm">
-              <span className="text-white text-xs font-bold">M</span>
-            </div>
-            <span className="text-sm font-semibold text-text-primary tracking-tight group-hover:text-accent-primary transition-colors">
-              Mechatronik Lexikon
-            </span>
+    <div className="h-screen w-full flex flex-col bg-white overflow-hidden">
+      {/* Header */}
+      <header className="h-11 w-full flex border-b border-border-subtle bg-white flex-shrink-0">
+        {/* Left: App name */}
+        <div className="w-64 flex-shrink-0 h-full flex items-center px-5 border-r border-border-subtle">
+          <Link href="/" className="text-sm font-medium text-text-primary hover:text-accent-primary transition-colors">
+            Mechatronik Lexikon
           </Link>
         </div>
-        {/* Right: Search (same padding as main content) */}
+        {/* Right: Search */}
         <div className="flex-1 flex items-center px-6 gap-3">
-          <div className="flex-1 relative max-w-xl">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-muted w-4 h-4 pointer-events-none z-10" />
+          <div className="flex-1 relative max-w-md">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-muted w-4 h-4 pointer-events-none" />
             <input
               type="text"
-              placeholder="Begriff suchen... (⌘K)"
+              placeholder="Suchen... (⌘K)"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={() => setSearchOpen(true)}
               onKeyDown={(e) => e.key === "Escape" && setSearchOpen(false)}
-              className="w-full pl-9 pr-4 py-1.5 text-sm bg-bg-secondary border border-border-subtle text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent-primary/20 focus:border-accent-primary/50 rounded-lg transition-all shadow-sm hover:shadow"
+              className="w-full pl-9 pr-4 py-1.5 text-sm bg-bg-secondary border border-border-subtle text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-1 focus:ring-accent-primary/30 focus:border-accent-primary/40 rounded-md transition-colors"
             />
           </div>
           <button
             onClick={() => setSidebarOpen(true)}
-            className="lg:hidden p-2 text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-all flex-shrink-0 hover:shadow-sm"
+            className="lg:hidden p-2 text-text-muted hover:text-text-primary rounded transition-colors flex-shrink-0"
             aria-label="Menu öffnen"
           >
             <Menu className="w-5 h-5" />
@@ -70,9 +65,9 @@ export function MainLayout({ children }: MainLayoutProps) {
 
       {/* Body */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Desktop sidebar - sticky with independent scroll */}
-        <aside className="hidden lg:flex lg:flex-col w-72 flex-shrink-0 border-r border-border-subtle bg-gradient-to-b from-white to-bg-secondary/30">
-          <div className="sticky top-0 h-[calc(100vh-3rem)] overflow-y-auto">
+        {/* Desktop sidebar */}
+        <aside className="hidden lg:block w-64 flex-shrink-0 border-r border-border-subtle bg-bg-secondary/40">
+          <div className="h-[calc(100vh-2.75rem)] overflow-y-auto">
             <div className="p-4 pb-8">
               <CategoryTree
                 categories={categories}
@@ -86,24 +81,24 @@ export function MainLayout({ children }: MainLayoutProps) {
         {sidebarOpen && (
           <>
             <div
-              className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 lg:hidden"
+              className="fixed inset-0 bg-black/20 z-40 lg:hidden"
               onClick={() => setSidebarOpen(false)}
             />
-            <aside className="fixed top-12 left-0 h-[calc(100vh-3rem)] w-72 bg-white border-r border-border-subtle z-50 lg:hidden shadow-xl animate-in slide-in-from-left duration-200">
+            <aside className="fixed top-11 left-0 h-[calc(100vh-2.75rem)] w-64 bg-white border-r border-border-subtle z-50 lg:hidden">
               <div className="h-full flex flex-col">
-                <div className="flex items-center justify-between px-5 py-3 border-b border-border-subtle bg-gradient-to-r from-bg-secondary to-white">
-                  <h2 className="text-xs font-semibold text-text-secondary uppercase tracking-wider">
-                    Inhaltsverzeichnis
-                  </h2>
+                <div className="flex items-center justify-between px-4 py-3 border-b border-border-subtle">
+                  <span className="text-xs font-medium text-text-muted uppercase tracking-wide">
+                    Inhalt
+                  </span>
                   <button
                     onClick={() => setSidebarOpen(false)}
-                    className="p-1.5 text-text-muted hover:text-text-primary hover:bg-bg-tertiary rounded-lg transition-all hover:shadow-sm"
+                    className="p-1 text-text-muted hover:text-text-primary rounded transition-colors"
                     aria-label="Navigation schließen"
                   >
                     <X className="w-4 h-4" />
                   </button>
                 </div>
-                <div className="flex-1 overflow-y-auto px-4 py-4">
+                <div className="flex-1 overflow-y-auto p-4">
                   <CategoryTree
                     categories={categories}
                     sections={sections}

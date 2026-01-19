@@ -41,37 +41,27 @@ export function CategoryTree({ categories, sections }: CategoryTreeProps) {
   }, [sections])
 
   return (
-    <nav className="space-y-2">
+    <nav className="space-y-1">
       {categories.map((category) => {
         const categorySections = getSectionsByCategory(category.id)
         const isActive = category.id === activeCategory
 
         return (
-          <div key={category.id} className="space-y-1">
+          <div key={category.id}>
             <a
               href={`#${category.id}`}
               className={cn(
-                "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group",
-                "hover:bg-bg-secondary hover:shadow-sm",
+                "block px-3 py-2 text-sm transition-colors rounded",
                 isActive
-                  ? "bg-accent-primary/10 text-accent-primary shadow-sm"
-                  : "text-text-secondary hover:text-text-primary"
+                  ? "text-text-primary font-medium"
+                  : "text-text-muted hover:text-text-primary"
               )}
             >
-              <span className="flex-1 text-left flex items-center gap-2.5">
-                <span className={cn(
-                  "font-mono text-xs font-bold w-6 h-6 rounded flex items-center justify-center transition-colors",
-                  isActive
-                    ? "bg-accent-primary text-white"
-                    : "bg-bg-tertiary text-text-muted group-hover:bg-accent-primary/20 group-hover:text-accent-primary"
-                )}>
-                  {category.number}
-                </span>
-                <span className="truncate">{category.title}</span>
-              </span>
+              <span className="font-mono text-xs mr-2 text-text-muted">{category.number}.</span>
+              {category.title}
             </a>
 
-            <div className="ml-9 border-l-2 border-border-subtle/50 pl-3 space-y-0.5">
+            <div className="ml-5 border-l border-border-subtle">
               {categorySections.map((section) => {
                 const isSectionActive = section.id === activeSection
                 return (
@@ -79,20 +69,14 @@ export function CategoryTree({ categories, sections }: CategoryTreeProps) {
                     key={section.id}
                     href={`#${section.id}`}
                     className={cn(
-                      "flex items-center gap-2.5 px-3 py-1.5 rounded-md text-sm transition-all group/section",
-                      "hover:bg-bg-secondary",
+                      "block pl-4 pr-3 py-1.5 text-sm transition-colors",
                       isSectionActive
-                        ? "bg-accent-primary/10 text-accent-primary font-medium border-l-2 border-accent-primary -ml-[calc(0.75rem+2px)] pl-[calc(0.75rem+10px)]"
-                        : "text-text-secondary hover:text-text-primary"
+                        ? "text-accent-primary border-l-2 border-accent-primary -ml-px"
+                        : "text-text-muted hover:text-text-secondary"
                     )}
                   >
-                    <span className={cn(
-                      "font-mono text-xs flex-shrink-0 transition-colors",
-                      isSectionActive ? "text-accent-primary" : "text-text-muted group-hover/section:text-accent-primary/70"
-                    )}>
-                      {section.number}
-                    </span>
-                    <span className="flex-1 truncate">{section.title}</span>
+                    <span className="font-mono text-xs mr-2">{section.number}</span>
+                    {section.title}
                   </a>
                 )
               })}
