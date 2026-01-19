@@ -3,7 +3,6 @@
 // ============================================================================
 
 import type { Entry, ContentBlock } from '../types';
-import { subcategoryToSectionMap } from '../helpers';
 
 const entriesData: Array<{
   id: string;
