@@ -131,3 +131,14 @@ a:hover {
   border-radius: 6px;
   overflow-x: auto;
 }
+
+/* Performance: skip rendering off-screen content */
+section[id] {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+}
+
+/* Smooth scroll for anchor navigation */
+html {
+  scroll-behavior: smooth;
+}

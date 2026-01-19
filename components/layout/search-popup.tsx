@@ -1,10 +1,8 @@
 "use client"
 
 import { useEffect, useMemo, useState, useRef } from "react"
-import { useRouter } from "next/navigation"
 import Fuse from "fuse.js"
 import { entries, getCategoryById, getSectionById } from "@/data"
-import Link from "next/link"
 import { Search } from "lucide-react"
 
 interface SearchPopupProps {
@@ -16,7 +14,6 @@ interface SearchPopupProps {
 }
 
 export function SearchPopup({ query, onQueryChange, isOpen, onClose, onResultSelect }: SearchPopupProps) {
-  const router = useRouter()
   const inputRef = useRef<HTMLInputElement>(null)
   const [selectedIndex, setSelectedIndex] = useState(0)
 
@@ -25,9 +22,9 @@ export function SearchPopup({ query, onQueryChange, isOpen, onClose, onResultSel
       new Fuse(entries, {
         keys: [
           "title",
-          { name: "content", getFn: (entry) => 
-            entry.content.map((block: any) => 
-              block.type === 'paragraph' || block.type === 'definition' ? block.text : 
+          { name: "content", getFn: (entry) =>
+            entry.content.map((block: any) =>
+              block.type === 'paragraph' || block.type === 'definition' ? block.text :
               block.type === 'list' ? block.items?.join(' ') : ''
             ).filter(Boolean).join(' ')
           }
@@ -55,6 +52,19 @@ export function SearchPopup({ query, onQueryChange, isOpen, onClose, onResultSel
     setSelectedIndex(0)
   }, [query])
 
+  const navigateToEntry = (entryId: string) => {
+    // Scroll to the entry using anchor
+    const element = document.getElementById(entryId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      // Update URL hash without full navigation
+      window.history.pushState(null, '', `#${entryId}`)
+    }
+    onQueryChange("")
+    onResultSelect?.()
+    onClose()
+  }
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Escape") {
       onClose()
@@ -66,15 +76,7 @@ export function SearchPopup({ query, onQueryChange, isOpen, onClose, onResultSel
       setSelectedIndex((prev) => Math.max(prev - 1, 0))
     } else if (e.key === "Enter" && searchResults[selectedIndex]) {
       e.preventDefault()
-      const entry = searchResults[selectedIndex]
-      const section = getSectionById(entry.sectionId)
-      const category = section ? getCategoryById(section.categoryId) : null
-      if (section && category) {
-        router.push(`/${category.id}/${section.id}?entry=${entry.id}`)
-        onQueryChange("")
-        onResultSelect?.()
-        onClose()
-      }
+      navigateToEntry(searchResults[selectedIndex].id)
     }
   }
 
@@ -87,7 +89,7 @@ export function SearchPopup({ query, onQueryChange, isOpen, onClose, onResultSel
         className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
         onClick={onClose}
       />
-      
+
       {/* Popup */}
       <div className="fixed top-20 left-1/2 transform -translate-x-1/2 w-full max-w-2xl z-50 px-4">
         <div className="bg-white rounded-lg shadow-xl border border-border-subtle overflow-hidden">
@@ -113,17 +115,12 @@ export function SearchPopup({ query, onQueryChange, isOpen, onClose, onResultSel
                   {searchResults.map((entry, index) => {
                     const section = getSectionById(entry.sectionId)
                     const category = section ? getCategoryById(section.categoryId) : null
-                    
+
                     return (
                       <li key={entry.id}>
-                        <Link
-                          href={`/${category?.id}/${section?.id}?entry=${entry.id}`}
-                          onClick={() => {
-                            onQueryChange("")
-                            onResultSelect?.()
-                            onClose()
-                          }}
-                          className={`block px-4 py-3 hover:bg-bg-secondary transition-colors ${
+                        <button
+                          onClick={() => navigateToEntry(entry.id)}
+                          className={`w-full text-left block px-4 py-3 hover:bg-bg-secondary transition-colors ${
                             index === selectedIndex ? "bg-bg-secondary" : ""
                           }`}
                         >
@@ -135,7 +132,7 @@ export function SearchPopup({ query, onQueryChange, isOpen, onClose, onResultSel
                               {category.title} → {section.title}
                             </div>
                           )}
-                        </Link>
+                        </button>
                       </li>
                     )
                   })}

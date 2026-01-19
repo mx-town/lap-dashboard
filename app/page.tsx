@@ -1,46 +1,49 @@
 "use client"
 
-import Link from "next/link"
-import { categories } from "@/data"
+import { categories, sections, entries, getSectionsByCategory, getEntriesBySection } from "@/data"
+import { ContentRenderer } from "@/components/content/content-renderer"
 
 export default function HomePage() {
   return (
-    <div className="h-full flex flex-col px-6 py-6">
-      {/* Welcome Section */}
-      <header className="mb-6 flex-shrink-0">
-        <h1 className="text-3xl lg:text-4xl font-bold text-text-primary tracking-tight mb-2">
-          Willkommen im Mechatronik Lexikon
-          </h1>
-        <p className="text-base lg:text-lg text-text-secondary leading-relaxed max-w-3xl">
-          Umfassendes Nachschlagewerk für das LAP Fachgespräch. Hier finden Sie
-          alle wichtigen Begriffe und Konzepte der Mechatronik, übersichtlich
-          nach Kategorien geordnet.
-        </p>
-      </header>
+    <div className="px-6 py-8 space-y-16">
+      {categories.map(cat => (
+        <section key={cat.id} id={cat.id} className="space-y-12">
+          <header className="border-b border-border-subtle pb-4">
+            <span className="font-mono text-sm text-text-muted">{cat.number}.</span>
+            <h1 className="text-3xl font-bold text-text-primary">{cat.title}</h1>
+            <p className="text-text-secondary mt-1">{cat.subtitle}</p>
+          </header>
 
-      {/* Bento Grid - Dense, fits viewport */}
-      <div className="flex-1 min-h-0 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-4">
-        {categories.map((category, index) => {
-                      return (
-            <Link
-                    key={category.id}
-              href={`/${category.id}`}
-              className="group relative overflow-hidden rounded-lg border border-border-subtle bg-white hover:border-accent-primary/50 hover:shadow-md transition-all flex flex-col items-center justify-center p-4 aspect-square"
-                  >
-              <div className="flex flex-col items-center gap-3 text-center w-full">
-                <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-lg bg-bg-secondary border border-border-subtle flex items-center justify-center flex-shrink-0">
-                  <span className="text-xs lg:text-sm font-mono font-semibold text-text-muted uppercase">
-                    {category.number}
-                  </span>
+          {getSectionsByCategory(cat.id).map(sec => (
+            <div key={sec.id} id={sec.id} className="space-y-8 scroll-mt-6">
+              <h2 className="text-xl font-semibold text-text-primary">
+                <span className="font-mono text-text-muted mr-2">{sec.number}</span>
+                {sec.title}
+              </h2>
+
+              <div className="space-y-10">
+                {getEntriesBySection(entries, sec.id).map(entry => (
+                  <article key={entry.id} id={entry.id} className="scroll-mt-6">
+                    <h3 className="text-lg font-medium text-text-primary mb-4">{entry.title}</h3>
+
+                    {entry.image && (
+                      <div className="mb-6">
+                        <img
+                          src={entry.image}
+                          alt={entry.title}
+                          className="w-full rounded-lg border border-border-subtle bg-bg-secondary p-6"
+                        />
                       </div>
-                <h2 className="font-semibold text-sm lg:text-base text-text-primary group-hover:text-accent-primary transition-colors">
-                  {category.title}
-                </h2>
+                    )}
+
+                    <ContentRenderer blocks={entry.content} />
+                  </article>
+                ))}
               </div>
-            </Link>
-          )
-        })}
-      </div>
+            </div>
+          ))}
+        </section>
+      ))}
     </div>
   )
 }
