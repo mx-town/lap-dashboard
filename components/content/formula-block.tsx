@@ -21,12 +21,12 @@ export function FormulaBlock({ latex, description, inline = false }: FormulaBloc
   }
 
   return (
-    <div className="my-6">
-      <div className="bg-gradient-to-r from-bg-secondary to-bg-tertiary/30 border border-border-subtle rounded-xl p-6 overflow-x-auto shadow-sm">
+    <div className="my-4">
+      <div className="bg-bg-secondary/50 border border-border-subtle rounded p-4 overflow-x-auto">
         <FormulaComponent math={latex} />
       </div>
       {description && (
-        <p className="text-text-muted text-sm mt-3 italic pl-1">{description}</p>
+        <p className="text-text-muted text-xs mt-2 italic">{description}</p>
       )}
     </div>
   )
