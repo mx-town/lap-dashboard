@@ -56,16 +56,17 @@ export function MainLayout({ children, categories, searchIndex }: MainLayoutProp
   return (
     <div className="h-screen w-full flex flex-col bg-white overflow-hidden">
       {/* Header */}
-      <header className="h-11 w-full flex border-b border-border-subtle bg-white flex-shrink-0">
+      <header className="pl-4 lg:pl-0 h-11 w-full lg:flex-row flex-row-reverse flex border-b border-border-subtle bg-white flex-shrink-0">
         {/* Left: App name */}
-        <div className="w-64 flex-shrink-0 h-full flex items-center px-5 border-r border-border-subtle">
+        <div className="w-72 flex-1 lg:flex-shrink-0 h-full flex items-center lg:px-5 border-r border-border-subtle">
           <Link href="/" className="text-sm font-medium text-text-primary hover:text-accent-primary transition-colors">
             Mechatronik Lexikon
           </Link>
         </div>
         {/* Right: Search */}
-        <div className="flex-1 flex items-center px-6 gap-3">
-          <div className="flex-1 relative max-w-md">
+        <div className="lg:flex-1 flex items-center lg:px-6 gap-3">
+          {/* Desktop: full search input */}
+          <div className="hidden md:block flex-1 relative max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-muted w-4 h-4 pointer-events-none" />
             <input
               type="text"
@@ -77,9 +78,10 @@ export function MainLayout({ children, categories, searchIndex }: MainLayoutProp
               className="w-full pl-9 pr-4 py-1.5 text-sm bg-bg-secondary border border-border-subtle text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-1 focus:ring-accent-primary/30 focus:border-accent-primary/40 rounded-md transition-colors"
             />
           </div>
+
           <button
             onClick={() => setSidebarOpen(true)}
-            className="lg:hidden p-2 text-text-muted hover:text-text-primary rounded transition-colors flex-shrink-0"
+            className="lg:hidden ml-auto p-2 text-text-muted hover:text-text-primary rounded transition-colors flex-shrink-0"
             aria-label="Menu öffnen"
           >
             <Menu className="w-5 h-5" />
@@ -103,7 +105,7 @@ export function MainLayout({ children, categories, searchIndex }: MainLayoutProp
               className="fixed inset-0 bg-black/20 z-40 lg:hidden"
               onClick={() => setSidebarOpen(false)}
             />
-            <aside className="fixed top-11 left-0 h-[calc(100vh-2.75rem)] w-64 bg-white border-r border-border-subtle z-50 lg:hidden">
+            <aside className="fixed left-0 bottom-0 w-64 bg-white border-r border-border-subtle z-50 lg:hidden">
               <div className="h-full flex flex-col">
                 <div className="flex items-center justify-between px-4 py-3 border-b border-border-subtle">
                   <span className="text-xs font-medium text-text-muted uppercase tracking-wide">
