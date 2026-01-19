@@ -76,11 +76,10 @@ export function CategoryTree({ categories }: CategoryTreeProps) {
             <a
               href={`#${category.id}`}
               className={cn(
-                "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
-                "hover:bg-bg-secondary",
+                "block px-3 py-2 text-sm transition-colors rounded",
                 isActive
-                  ? "bg-accent-primary/10 text-accent-primary"
-                  : "text-text-secondary hover:text-text-primary"
+                  ? "text-text-primary font-medium"
+                  : "text-text-muted hover:text-text-primary"
               )}
             >
               <span className="font-mono w-5">{category.number}.</span>

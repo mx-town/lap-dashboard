@@ -141,24 +141,24 @@ export function SearchPopup({
     <>
       {/* Overlay */}
       <div
-        className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
+        className="fixed inset-0 bg-black/10 z-40"
         onClick={onClose}
       />
 
       {/* Popup */}
-      <div className="fixed top-20 left-1/2 transform -translate-x-1/2 w-full max-w-2xl z-50 px-4">
-        <div className="bg-white rounded-lg shadow-xl border border-border-subtle overflow-hidden">
+      <div className="fixed top-16 left-1/2 transform -translate-x-1/2 w-full max-w-lg z-50 px-4">
+        <div className="bg-white rounded-lg shadow-lg border border-border-subtle overflow-hidden">
           {/* Search Input */}
-          <div className="relative p-4 border-b border-border-subtle">
-            <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-text-muted w-5 h-5 pointer-events-none" />
+          <div className="relative p-3 border-b border-border-subtle">
+            <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-text-muted w-4 h-4 pointer-events-none" />
             <input
               ref={inputRef}
               type="text"
-              placeholder="Begriff suchen..."
+              placeholder="Suchen..."
               value={query}
               onChange={(e) => onQueryChange(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="w-full pl-12 pr-4 py-3 bg-bg-secondary border border-border-subtle rounded-lg text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent-primary/20 focus:border-accent-primary"
+              className="w-full pl-10 pr-4 py-2 text-sm bg-transparent text-text-primary placeholder:text-text-muted focus:outline-none"
             />
           </div>
 
@@ -175,8 +175,10 @@ export function SearchPopup({
                       <li key={entry.id}>
                         <button
                           onClick={() => navigateToEntry(entry.id)}
-                          className={`w-full text-left block px-4 py-3 hover:bg-bg-secondary transition-colors ${
-                            index === selectedIndex ? "bg-bg-secondary" : ""
+                          className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
+                            index === selectedIndex
+                              ? "bg-bg-secondary"
+                              : "hover:bg-bg-secondary/50"
                           }`}
                         >
                           <div className="font-semibold text-text-primary mb-1">
