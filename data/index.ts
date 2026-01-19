@@ -16,9 +16,6 @@ export { entries } from './entries';
 
 // Helper functions
 export {
-  createContentBlocks,
-  subcategoryToSectionMap,
-  sectionsByCategory,
   getCategoryById,
   getSectionById,
   getSectionsByCategory,

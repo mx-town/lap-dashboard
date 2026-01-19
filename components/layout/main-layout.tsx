@@ -2,13 +2,10 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Search, Menu } from "lucide-react"
-import { useRouter, usePathname } from "next/navigation"
+import { Search, Menu, X } from "lucide-react"
 import { categories, sections } from "@/data"
 import { CategoryTree } from "@/components/navigation/category-tree"
 import { SearchPopup } from "./search-popup"
-import { X } from "lucide-react"
-import { cn } from "@/lib/utils"
 
 interface MainLayoutProps {
   children: React.ReactNode
@@ -18,13 +15,6 @@ export function MainLayout({ children }: MainLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [searchOpen, setSearchOpen] = useState(false)
-  const router = useRouter()
-  const pathname = usePathname()
-
-  // Extract category and section IDs from pathname
-  const pathParts = pathname.split("/").filter(Boolean)
-  const categoryId = pathParts[0] || undefined
-  const sectionId = pathParts[1] || undefined
 
   // Cmd/Ctrl + K shortcut
   useEffect(() => {
@@ -38,16 +28,6 @@ export function MainLayout({ children }: MainLayoutProps) {
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [])
-
-  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && searchQuery.trim()) {
-      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
-      setSearchQuery("")
-      setSearchOpen(false)
-    } else if (e.key === "Escape") {
-      setSearchOpen(false)
-    }
-  }
 
   return (
     <div className="h-screen w-full flex flex-col bg-bg-primary overflow-hidden">
@@ -68,8 +48,8 @@ export function MainLayout({ children }: MainLayoutProps) {
               placeholder="Begriff suchen... (⌘K)"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={handleSearch}
               onFocus={() => setSearchOpen(true)}
+              onKeyDown={(e) => e.key === "Escape" && setSearchOpen(false)}
               className="w-full pl-8 pr-3 py-1 text-sm bg-bg-secondary border border-border-subtle text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-1 focus:ring-accent-primary/20 focus:border-accent-primary rounded transition-all"
             />
           </div>
@@ -91,8 +71,6 @@ export function MainLayout({ children }: MainLayoutProps) {
             <CategoryTree
               categories={categories}
               sections={sections}
-              currentCategoryId={categoryId}
-              currentSectionId={sectionId}
             />
           </div>
         </aside>
@@ -122,8 +100,6 @@ export function MainLayout({ children }: MainLayoutProps) {
                   <CategoryTree
                     categories={categories}
                     sections={sections}
-                    currentCategoryId={categoryId}
-                    currentSectionId={sectionId}
                   />
                 </div>
               </div>

@@ -8,40 +8,30 @@ import { cn } from "@/lib/utils"
 interface CategoryTreeProps {
   categories: Category[]
   sections: Section[]
-  currentCategoryId?: string
-  currentSectionId?: string
 }
 
-export function CategoryTree({
-  categories,
-  sections,
-  currentCategoryId,
-  currentSectionId,
-}: CategoryTreeProps) {
-  const [scrollActiveSection, setScrollActiveSection] = useState<string | null>(null)
-  const [scrollActiveCategory, setScrollActiveCategory] = useState<string | null>(null)
+export function CategoryTree({ categories, sections }: CategoryTreeProps) {
+  const [activeSection, setActiveSection] = useState<string | null>(null)
+  const [activeCategory, setActiveCategory] = useState<string | null>(null)
 
   // IntersectionObserver to track visible section
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        // Find the first intersecting section
         const visible = entries.find(e => e.isIntersecting)
         if (visible) {
           const sectionId = visible.target.id
-          setScrollActiveSection(sectionId)
+          setActiveSection(sectionId)
 
-          // Find the category for this section
           const section = sections.find(s => s.id === sectionId)
           if (section) {
-            setScrollActiveCategory(section.categoryId)
+            setActiveCategory(section.categoryId)
           }
         }
       },
       { rootMargin: '-20% 0px -60% 0px' }
     )
 
-    // Observe all section elements
     sections.forEach(sec => {
       const el = document.getElementById(sec.id)
       if (el) observer.observe(el)
@@ -50,15 +40,11 @@ export function CategoryTree({
     return () => observer.disconnect()
   }, [sections])
 
-  // Use scroll-based highlighting, fall back to URL-based
-  const activeCategoryId = scrollActiveCategory || currentCategoryId
-  const activeSectionId = scrollActiveSection || currentSectionId
-
   return (
     <nav className="space-y-1">
       {categories.map((category) => {
         const categorySections = getSectionsByCategory(category.id)
-        const isActive = category.id === activeCategoryId
+        const isActive = category.id === activeCategory
 
         return (
           <div key={category.id}>
@@ -82,7 +68,7 @@ export function CategoryTree({
 
             <div className="ml-8 mt-1 space-y-0.5">
               {categorySections.map((section) => {
-                const isSectionActive = section.id === activeSectionId
+                const isSectionActive = section.id === activeSection
                 return (
                   <a
                     key={section.id}
