@@ -30,7 +30,9 @@ export interface SearchEntry {
   title: string
   categoryId: string
   categoryTitle: string
+  categoryNumber: number
   sectionNumber: string
+  content: string // Plain text content for full-text search
 }
 
 function extractHeadings(markdown: string): HeadingNode[] {
@@ -102,16 +104,85 @@ export async function getAllContent(): Promise<CategoryContent[]> {
   return content
 }
 
+// Strip markdown syntax to get plain text for search
+function stripMarkdown(text: string): string {
+  return text
+    // Remove code blocks
+    .replace(/```[\s\S]*?```/g, '')
+    // Remove inline code
+    .replace(/`[^`]+`/g, '')
+    // Remove images
+    .replace(/!\[.*?\]\(.*?\)/g, '')
+    // Remove links but keep text
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    // Remove bold/italic
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/__([^_]+)__/g, '$1')
+    .replace(/_([^_]+)_/g, '$1')
+    // Remove headings markers
+    .replace(/^#{1,6}\s+/gm, '')
+    // Remove horizontal rules
+    .replace(/^[-*_]{3,}\s*$/gm, '')
+    // Remove list markers
+    .replace(/^[\s]*[-*+]\s+/gm, '')
+    .replace(/^[\s]*\d+\.\s+/gm, '')
+    // Remove blockquotes
+    .replace(/^>\s+/gm, '')
+    // Remove table syntax
+    .replace(/\|/g, ' ')
+    .replace(/^[-:]+$/gm, '')
+    // Remove HTML tags
+    .replace(/<[^>]+>/g, '')
+    // Collapse whitespace
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+// Extract sections split by h2 headings with their content
+function extractSections(markdown: string, categoryId: string, categoryTitle: string, categoryNumber: number): SearchEntry[] {
+  const sections: SearchEntry[] = []
+  const slugger = new GithubSlugger()
+
+  // Split by h2 headings, keeping the heading
+  const parts = markdown.split(/^(?=## )/m)
+
+  for (const part of parts) {
+    // Process any h1 first to keep slugger in sync
+    const h1Match = part.match(/^# (.+)$/m)
+    if (h1Match) {
+      slugger.slug(h1Match[1])
+    }
+
+    // Check if this part starts with an h2
+    const h2Match = part.match(/^## (.+)$/m)
+    if (h2Match) {
+      const title = h2Match[1]
+      const id = slugger.slug(title)
+      const sectionNumber = title.match(/^[\d.]+/)?.[0] || ''
+
+      // Get content after the h2 heading
+      const contentStart = part.indexOf('\n') + 1
+      const rawContent = part.slice(contentStart)
+      const content = stripMarkdown(rawContent)
+
+      sections.push({
+        id,
+        title,
+        categoryId,
+        categoryTitle,
+        categoryNumber,
+        sectionNumber,
+        content,
+      })
+    }
+  }
+
+  return sections
+}
+
 export function buildSearchIndex(categories: CategoryContent[]): SearchEntry[] {
-  return categories.flatMap(cat => 
-    cat.headings
-      .filter(h => h.level === 2)
-      .map(heading => ({
-        id: heading.id,
-        title: heading.text,
-        categoryId: cat.id,
-        categoryTitle: cat.title,
-        sectionNumber: heading.text.match(/^[\d.]+/)?.[0] || '',
-      }))
+  return categories.flatMap(cat =>
+    extractSections(cat.rawMarkdown, cat.id, cat.title, cat.number)
   )
 }

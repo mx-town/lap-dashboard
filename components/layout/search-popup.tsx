@@ -4,25 +4,14 @@ import { useEffect, useMemo, useState, useRef } from "react"
 import Fuse from "fuse.js"
 import { Search } from "lucide-react"
 
-interface HeadingNode {
-  id: string
-  text: string
-  level: 2 | 3
-}
-
-interface CategoryData {
-  id: string
-  number: number
-  title: string
-  headings: HeadingNode[]
-}
-
 interface SearchEntry {
   id: string
   title: string
   categoryId: string
   categoryTitle: string
   categoryNumber: number
+  sectionNumber: string
+  content: string
 }
 
 interface SearchPopupProps {
@@ -31,7 +20,47 @@ interface SearchPopupProps {
   isOpen: boolean
   onClose: () => void
   onResultSelect?: () => void
-  categories: CategoryData[]
+  searchIndex: SearchEntry[]
+}
+
+// Extract a snippet around the matched term
+function getSnippet(content: string, query: string, maxLength: number = 120): string {
+  const lowerContent = content.toLowerCase()
+  const lowerQuery = query.toLowerCase()
+  const index = lowerContent.indexOf(lowerQuery)
+
+  if (index === -1) {
+    // No direct match found, return start of content
+    return content.length > maxLength ? content.slice(0, maxLength) + "..." : content
+  }
+
+  // Calculate snippet boundaries
+  const start = Math.max(0, index - 40)
+  const end = Math.min(content.length, index + query.length + 80)
+
+  let snippet = content.slice(start, end)
+  if (start > 0) snippet = "..." + snippet
+  if (end < content.length) snippet = snippet + "..."
+
+  return snippet
+}
+
+// Highlight matching terms in text
+function highlightMatch(text: string, query: string): React.ReactNode {
+  if (!query.trim()) return text
+
+  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi")
+  const parts = text.split(regex)
+
+  return parts.map((part, i) =>
+    regex.test(part) ? (
+      <mark key={i} className="bg-yellow-200 text-text-primary rounded px-0.5">
+        {part}
+      </mark>
+    ) : (
+      part
+    )
+  )
 }
 
 export function SearchPopup({
@@ -40,39 +69,32 @@ export function SearchPopup({
   isOpen,
   onClose,
   onResultSelect,
-  categories,
+  searchIndex,
 }: SearchPopupProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [selectedIndex, setSelectedIndex] = useState(0)
 
-  // Build search index from categories and their headings
-  const searchEntries = useMemo(() => {
-    return categories.flatMap((cat) =>
-      cat.headings
-        .filter((h) => h.level === 2)
-        .map((heading) => ({
-          id: heading.id,
-          title: heading.text,
-          categoryId: cat.id,
-          categoryTitle: cat.title,
-          categoryNumber: cat.number,
-        }))
-    )
-  }, [categories])
-
+  // Configure Fuse.js for full-text search
   const fuse = useMemo(
     () =>
-      new Fuse(searchEntries, {
-        keys: ["title", "categoryTitle"],
-        threshold: 0.3,
+      new Fuse(searchIndex, {
+        keys: [
+          { name: "title", weight: 2 },
+          { name: "content", weight: 1 },
+          { name: "categoryTitle", weight: 0.5 },
+        ],
+        threshold: 0.4,
         includeScore: true,
+        includeMatches: true,
+        ignoreLocation: true,
+        minMatchCharLength: 2,
       }),
-    [searchEntries]
+    [searchIndex]
   )
 
   const searchResults = useMemo(() => {
-    if (!query.trim()) return []
-    return fuse.search(query).slice(0, 8).map((result) => result.item)
+    if (!query.trim() || query.length < 2) return []
+    return fuse.search(query).slice(0, 10)
   }, [query, fuse])
 
   // Focus input when opened
@@ -109,7 +131,7 @@ export function SearchPopup({
       setSelectedIndex((prev) => Math.max(prev - 1, 0))
     } else if (e.key === "Enter" && searchResults[selectedIndex]) {
       e.preventDefault()
-      navigateToEntry(searchResults[selectedIndex].id)
+      navigateToEntry(searchResults[selectedIndex].item.id)
     }
   }
 
@@ -141,34 +163,50 @@ export function SearchPopup({
           </div>
 
           {/* Results */}
-          {query.trim() && (
-            <div className="max-h-96 overflow-y-auto">
+          {query.trim() && query.length >= 2 && (
+            <div className="max-h-[28rem] overflow-y-auto">
               {searchResults.length > 0 ? (
                 <ul className="py-2">
-                  {searchResults.map((entry, index) => (
-                    <li key={entry.id}>
-                      <button
-                        onClick={() => navigateToEntry(entry.id)}
-                        className={`w-full text-left block px-4 py-3 hover:bg-bg-secondary transition-colors ${
-                          index === selectedIndex ? "bg-bg-secondary" : ""
-                        }`}
-                      >
-                        <div className="font-semibold text-text-primary mb-1">
-                          {entry.title}
-                        </div>
-                        <div className="text-sm text-text-muted">
-                          {entry.categoryNumber}. {entry.categoryTitle}
-                        </div>
-                      </button>
-                    </li>
-                  ))}
+                  {searchResults.map((result, index) => {
+                    const entry = result.item
+                    const snippet = getSnippet(entry.content, query)
+
+                    return (
+                      <li key={entry.id}>
+                        <button
+                          onClick={() => navigateToEntry(entry.id)}
+                          className={`w-full text-left block px-4 py-3 hover:bg-bg-secondary transition-colors ${
+                            index === selectedIndex ? "bg-bg-secondary" : ""
+                          }`}
+                        >
+                          <div className="font-semibold text-text-primary mb-1">
+                            {highlightMatch(entry.title, query)}
+                          </div>
+                          <div className="text-sm text-text-muted mb-1.5">
+                            {entry.categoryNumber}. {entry.categoryTitle}
+                          </div>
+                          {snippet && (
+                            <div className="text-xs text-text-secondary line-clamp-2">
+                              {highlightMatch(snippet, query)}
+                            </div>
+                          )}
+                        </button>
+                      </li>
+                    )
+                  })}
                 </ul>
               ) : (
                 <div className="py-8 text-center text-text-muted">
-                  <div className="text-4xl mb-2">🔍</div>
-                  <p>Keine Ergebnisse gefunden</p>
+                  <p>Keine Ergebnisse für &quot;{query}&quot;</p>
                 </div>
               )}
+            </div>
+          )}
+
+          {/* Hint when query too short */}
+          {query.trim() && query.length < 2 && (
+            <div className="py-6 text-center text-text-muted text-sm">
+              Mindestens 2 Zeichen eingeben...
             </div>
           )}
         </div>

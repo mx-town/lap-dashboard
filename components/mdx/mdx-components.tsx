@@ -13,22 +13,22 @@ export const mdxComponents: MDXComponents = {
   
   // Override native elements for consistent styling
   h1: ({ children, ...props }) => (
-    <h1 className="text-3xl font-bold text-text-primary mt-8 mb-4" {...props}>
+    <h1 className="text-3xl font-bold text-text-primary mt-6 mb-3" {...props}>
       {children}
     </h1>
   ),
   h2: ({ children, ...props }) => (
-    <h2 className="text-xl font-semibold text-text-primary mt-8 mb-4 pb-2 border-b border-border-subtle" {...props}>
+    <h2 className="text-xl font-semibold text-text-primary mt-6 mb-3 pb-2 border-b border-border-subtle" {...props}>
       {children}
     </h2>
   ),
   h3: ({ children, ...props }) => (
-    <h3 className="text-lg font-medium text-text-primary mt-6 mb-3" {...props}>
+    <h3 className="text-lg font-medium text-text-primary mt-4 mb-2" {...props}>
       {children}
     </h3>
   ),
   h4: ({ children, ...props }) => (
-    <h4 className="text-base font-medium text-text-primary mt-4 mb-2" {...props}>
+    <h4 className="text-base font-medium text-text-primary mt-3 mb-2" {...props}>
       {children}
     </h4>
   ),

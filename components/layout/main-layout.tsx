@@ -19,12 +19,23 @@ interface CategoryData {
   headings: HeadingNode[]
 }
 
+interface SearchEntry {
+  id: string
+  title: string
+  categoryId: string
+  categoryTitle: string
+  categoryNumber: number
+  sectionNumber: string
+  content: string
+}
+
 interface MainLayoutProps {
   children: React.ReactNode
   categories: CategoryData[]
+  searchIndex: SearchEntry[]
 }
 
-export function MainLayout({ children, categories }: MainLayoutProps) {
+export function MainLayout({ children, categories, searchIndex }: MainLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [searchOpen, setSearchOpen] = useState(false)
@@ -128,7 +139,7 @@ export function MainLayout({ children, categories }: MainLayoutProps) {
           setSearchOpen(false)
         }}
         onResultSelect={() => setSearchQuery("")}
-        categories={categories}
+        searchIndex={searchIndex}
       />
     </div>
   )

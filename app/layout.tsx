@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import "./globals.css"
 import { MainLayout } from "@/components/layout/main-layout"
-import { getAllContent } from "@/lib/content"
+import { getAllContent, buildSearchIndex } from "@/lib/content"
 
 export const metadata: Metadata = {
   title: "Mechatronik Lexikon - LAP Fachgespräch",
@@ -23,10 +23,15 @@ export default async function RootLayout({
     headings,
   }))
 
+  // Build full-text search index
+  const searchIndex = buildSearchIndex(content)
+
   return (
     <html lang="de" className="scroll-smooth">
       <body className="font-sans antialiased">
-        <MainLayout categories={categories}>{children}</MainLayout>
+        <MainLayout categories={categories} searchIndex={searchIndex}>
+          {children}
+        </MainLayout>
       </body>
     </html>
   )
