@@ -24,10 +24,13 @@ Die Inhalte dieses Dokuments basieren auf:
 - DIN EN 61008-1 / 61009-1 (VDE 0664) – Fehlerstrom-Schutzeinrichtungen
 - DIN EN 60898-1 (VDE 0641-11) – Leitungsschutzschalter
 - ÖVE/ÖNORM E 8001-1 und E 8101 – Elektrotechnische Sicherheitsvorschriften Österreich
+- ÖVE/ÖNORM EN 61111 – Isoliermatten
 - DIN VDE 0100 – Errichten von Niederspannungsanlagen
 - DIN 338 – Spiralbohrer
 - DIN 13-1 / ISO 261 – Metrisches ISO-Gewinde
 - ISO 5599 – Pneumatik-Anschlussbezeichnung
+- ISO 1219 – Pneumatik-Schaltzeichen
+- IEC 60309 – CEE-Stecker
 - IEC 61131-3 – SPS-Programmierung
 
 Fachbücher: Fachkunde Elektrotechnik, Tabellenbuch Metall, Fachkunde Mechatronik (Europa-Lehrmittel)

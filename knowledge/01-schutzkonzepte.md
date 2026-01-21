@@ -40,37 +40,28 @@ Zusätzliche Schutzmaßnahme bei Versagen von Basis- und Fehlerschutz. In Öster
 
 ### Schutzklasse 0
 
-**Aufbau:** Nur Basisisolierung zwischen spannungsführenden Teilen und Gehäuse. Kein Schutzleiter vorhanden.
-
-**Funktionsweise:** Der einzige Schutz ist die Isolierung. Bei einem Isolationsfehler besteht kein weiterer Schutz.
-
-**Anwendung:** In Deutschland und Österreich nicht zugelassen. EU-weit verboten für Neugeräte.
++ **Aufbau:** Nur Basisisolierung zwischen spannungsführenden Teilen und Gehäuse. Kein Schutzleiter vorhanden.
++ **Funktionsweise:** Der einzige Schutz ist die Isolierung. Bei einem Isolationsfehler besteht kein weiterer Schutz.
++ **Anwendung:** In Deutschland und Österreich nicht zugelassen. EU-weit verboten für Neugeräte.
 
 ### Schutzklasse I
 
-**Aufbau:** Basisisolierung plus Schutzleiteranschluss am Gehäuse. Symbol: ⏚
-
-**Funktionsweise:** Bei Isolationsfehler fließt der Fehlerstrom über den Schutzleiter ab. Die Überstromschutzeinrichtung (Sicherung, LS) löst aus.
-
-**Anwendung:** Waschmaschinen, Elektroherde, stationäre Geräte mit Metallgehäuse.
++ **Aufbau:** Basisisolierung plus Schutzleiteranschluss am Gehäuse. Symbol: ⏚
++ **Funktionsweise:** Bei Isolationsfehler fließt der Fehlerstrom über den Schutzleiter ab. Die Überstromschutzeinrichtung (Sicherung, LS) löst aus.
++ **Anwendung:** Waschmaschinen, Elektroherde, stationäre Geräte mit Metallgehäuse.
 
 ### Schutzklasse II
 
-**Aufbau:** Doppelte oder verstärkte Isolierung. Kein Schutzleiter erforderlich. Symbol: Doppelquadrat (⧈)
-
-**Funktionsweise:** Zwei unabhängige Isolationsschichten verhindern das Erreichen spannungsführender Teile.
-
-**Anwendung:** Netzteile, Elektrowerkzeuge, mobile Geräte wie Bohrmaschinen.
++ **Aufbau:** Doppelte oder verstärkte Isolierung. Kein Schutzleiter erforderlich. Symbol: Doppelquadrat (⧈)
++ **Funktionsweise:** Zwei unabhängige Isolationsschichten verhindern das Erreichen spannungsführender Teile.
++ **Anwendung:** Netzteile, Elektrowerkzeuge, mobile Geräte wie Bohrmaschinen.
 
 ### Schutzklasse III
 
-**Aufbau:** Betrieb mit Schutzkleinspannung (SELV/PELV) unter 50 V AC oder 120 V DC. Symbol: III im Rhombus.
-
-**SELV:** Safety Extra Low Voltage – keine Erdverbindung, höchste Sicherheitsstufe.
-
-**PELV:** Protective Extra Low Voltage – mit Erdverbindung, für Funktionserdung.
-
-**Anwendung:** Laptops, Spielzeug, Gartenbeleuchtung, medizinische Geräte.
++ **Aufbau:** Betrieb mit Schutzkleinspannung (SELV/PELV) unter 50 V AC oder 120 V DC. Symbol: III im Rhombus.
++ **SELV:** Safety Extra Low Voltage – keine Erdverbindung, höchste Sicherheitsstufe.
++ **PELV:** Protective Extra Low Voltage – mit Erdverbindung, für Funktionserdung.
++ **Anwendung:** Laptops, Spielzeug, Gartenbeleuchtung, medizinische Geräte.
 
 ## 1.3 Schutztrennung und galvanische Trennung
 
@@ -82,7 +73,11 @@ Zusätzliche Schutzmaßnahme bei Versagen von Basis- und Fehlerschutz. In Öster
 
 **Anwendung:** Rasiersteckdosen in Badezimmern, Baustellentransformatoren, Werkstätten.
 
-**Wichtig:** Nur EIN Verbraucher pro Sekundärwicklung. Keine Erdung der Sekundärseite.
+**Wichtig:** 
+- Nur EIN Verbraucher pro Sekundärwicklung
+- Keine Erdung der Sekundärseite
+- Bei zwei Verbrauchern könnte ein Schluss am ersten und zweiten Gerät einen geschlossenen Stromkreis bilden
+- Die 230V sind weiterhin gefährlich – der Schutz besteht nur im fehlenden Erdschluss
 
 ### Galvanische Trennung
 
@@ -95,11 +90,29 @@ Zusätzliche Schutzmaßnahme bei Versagen von Basis- und Fehlerschutz. In Öster
 **Wichtig:** Zwischen Primär- und Sekundärseite besteht KEINE leitende Verbindung. Die Energieübertragung erfolgt durch magnetische, optische oder mechanische Kopplung.
 
 **Realisierung der galvanischen Trennung:**
-- Transformator – Energie wird über magnetische Kopplung übertragen
-- Optokoppler – Signal wird über Licht übertragen (LED → Fototransistor)
-- Relais – Signal wird mechanisch übertragen. Spule und Kontakte sind elektrisch getrennt.
+- **Transformator** – Energie wird über magnetische Kopplung übertragen
+- **Optokoppler** – Signal wird über Licht übertragen (LED → Fototransistor). LED und Fototransistor sitzen gegenüber im lichtdichten Gehäuse. Isolationsspannung typisch 2,5-5kV. Anwendung: Potentialtrennung zwischen SPS und Leistungselektronik.
+- **Relais** – Signal wird mechanisch übertragen. Spule und Kontakte sind elektrisch getrennt.
 
-## 1.4 IP-Schutzarten
+## 1.4 Abdeckmatte (Isoliermatte)
+
+**Zweck:** Schutz gegen elektrischen Schlag bei Arbeiten an oder in der Nähe von unter Spannung stehenden Teilen.
+
+**Klassen nach Spannungsfestigkeit:**
+
+| Klasse | Max. Spannung AC | Prüfspannung |
+|--------|------------------|--------------|
+| 0 | bis 1000 V | 5 kV |
+| 1 | bis 7500 V | 10 kV |
+| 2 | bis 17000 V | 20 kV |
+| 3 | bis 26500 V | 30 kV |
+| 4 | bis 36000 V | 40 kV |
+
+**Lagerung:** Trocken, dunkel, nicht knicken. Regelmäßige Sichtprüfung auf Risse.
+
+**Prüfung:** Alle 6 Monate elektrische Prüfung nach ÖVE/ÖNORM EN 61111.
+
+## 1.5 IP-Schutzarten
 
 **Aufbau:** Kennzeichnung IP XY. Erste Ziffer = Fremdkörperschutz, zweite Ziffer = Wasserschutz.
 
@@ -139,7 +152,7 @@ Zusätzliche Schutzmaßnahme bei Versagen von Basis- und Fehlerschutz. In Öster
 - IP67 = Sensor im Nassbereich
 - IP69K = Lebensmittelindustrie
 
-## 1.5 Die 5 Sicherheitsregeln
+## 1.6 Die 5 Sicherheitsregeln
 
 Vor Arbeiten an elektrischen Anlagen müssen die 5 Sicherheitsregeln in dieser Reihenfolge eingehalten werden:
 
@@ -159,6 +172,8 @@ Schloss anbringen, Warnschilder aufhängen, Schlüssel abziehen.
 
 Mit zweipoligem Spannungsprüfer (Duspol) an allen Polen prüfen. Vor und nach der Messung an bekannter Spannungsquelle testen.
 
+**Wichtig:** Zweipoliger Prüfer (DUSPOL) ist Pflicht – einpoliger Phasenprüfer zeigt nur Spannung gegen Erde, nicht zwischen Außenleitern!
+
 **Praxisbeispiel:** Bevor du die Steckdose anfasst, prüfst du mit einem Spannungsprüfer, ob wirklich keine Spannung mehr anliegt.
 
 ### 4. Erden und Kurzschließen
@@ -173,7 +188,7 @@ Isolierende Abdeckungen oder Absperrungen verwenden.
 
 **Praxisbeispiel:** Neben der Arbeitsstelle liegen noch spannungsführende Teile – diese deckst du mit isolierenden Abdeckungen ab, damit du sie nicht versehentlich berührst.
 
-## 1.6 Schleifenimpedanz
+## 1.7 Schleifenimpedanz
 
 **Was ist das?** Die Schleifenimpedanz Zs ist der Gesamtwiderstand des Stromweges bei einem Körperschluss – also der Weg, den der Fehlerstrom vom Außenleiter (L) über den Fehler und den Schutzleiter (PE) zurück zur Quelle nimmt.
 
@@ -185,11 +200,15 @@ Isolierende Abdeckungen oder Absperrungen verwenden.
 - U₀ = Nennspannung (230 V)
 - Ia = Abschaltstrom der Schutzeinrichtung
 
+**Berechnungsbeispiele:**
+- LS B16: Ia = 5×16A = 80A, also Zs_max = 230V/80A = 2,88Ω
+- LS C16: Ia = 10×16A = 160A, also Zs_max = 230V/160A = 1,44Ω
+
 **Messung:** Mit Schleifenimpedanz-Messgerät zwischen L und PE messen.
 
 **Grenzwert:** Für LS B16 bei 0,4 s Abschaltzeit: Zs_max = 230 V / 80 A = 2,88 Ω
 
-## 1.7 ESD – Elektrostatische Entladung
+## 1.8 ESD – Elektrostatische Entladung
 
 **Definition:** ESD (Electrostatic Discharge) ist die plötzliche Entladung statischer Elektrizität zwischen zwei Objekten.
 
@@ -202,7 +221,7 @@ Isolierende Abdeckungen oder Absperrungen verwenden.
 - Luftfeuchtigkeit > 50 % halten
 - Bauteile nur am Gehäuserand anfassen
 
-## 1.8 Erste Hilfe bei Stromunfall
+## 1.9 Erste Hilfe bei Stromunfall
 
 **Reihenfolge der Maßnahmen:**
 

@@ -40,7 +40,25 @@ Kabeltypen, Leitungen und Steckverbinder
 | H07V-K | Feindrähtige Aderleitung (harmonisiert) | Flexible Verbindungen |
 | H07RN-F | Gummischlauchleitung (harmonisiert) | Baustelle, mechanisch beansprucht |
 
-## 5.2 Aderkennzeichnung
+## 5.2 CEE-Stecker (IEC 60309)
+
+**Norm:** IEC 60309 für Industrie- und Drehstromstecker.
+
+**Farbcodierung:**
+- **Blau** = 230V 1~ (Camping, Baustelle)
+- **Rot** = 400V 3~ (Industrie)
+- **Gelb** = 110V
+
+**Codierung:** Position der Erdungsnase verhindert Verwechslung verschiedener Spannungen.
+
+**Schutzart:** Mindestens IP44, gesteckt oft IP67.
+
+**Polzahl:**
+- 3-polig (L+N+PE)
+- 4-polig (3L+PE)
+- 5-polig (3L+N+PE)
+
+## 5.3 Aderkennzeichnung
 
 **L (Außenleiter/Phase):** Braun, Schwarz, Grau (L1, L2, L3)
 
@@ -52,7 +70,7 @@ Kabeltypen, Leitungen und Steckverbinder
 
 **Steckdosenanschluss:** PE am Schutzkontakt (Bügel oben und unten). PE immer etwas länger als L und N – reißt zuletzt bei Zugbelastung.
 
-## 5.3 Steckertypen
+## 5.4 Steckertypen
 
 ### Stecker ohne Schutzleiter (2-polig)
 

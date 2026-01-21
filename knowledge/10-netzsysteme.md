@@ -68,7 +68,22 @@ Die Buchstaben in der Systembezeichnung haben folgende Bedeutung:
 
 **Anwendung:** Nur für Zuleitungen erlaubt, NICHT in Gebäuden für Endstromkreise!
 
-## 10.6 TN-C-S-System
+## 10.6 Nullung (klassische Schutzmassnahme, Altbestand)
+
+**Definition:** Bei der klassischen Nullung dient der PEN-Leiter gleichzeitig als Schutzleiter.
+
+**Gefahr bei PEN-Unterbrechung:** Volle Netzspannung am Gehäuse, keine Sicherung löst aus!
+
+**Erkennung Altbestand:**
+- Nur 4 Adern (L1, L2, L3, PEN)
+- Grüngelb auf N-Klemme
+- Anlagen vor 1973
+
+**FI-Nachrüstung:** PEN darf NICHT durch den FI – nur die Außenleiter!
+
+**Sanierung:** Umstellung auf TN-C-S-System durch Aufteilung des PEN.
+
+## 10.7 TN-C-S-System
 
 **Aufbau:** PEN in der Zuleitung vom Trafo bis zum Hausanschlusskasten (HAK). Dort Aufteilung in PE und N (C wird zu S).
 
@@ -80,7 +95,9 @@ Die Buchstaben in der Systembezeichnung haben folgende Bedeutung:
 
 **Wichtig:** Nach der Auftrennung dürfen PE und N NIE wieder verbunden werden!
 
-## 10.7 TT-System
+**Grund:** Nach der Aufteilung fließen Betriebsströme nur über N. Würde man PE und N verbinden, würden Ströme über PE fließen und Berührungsspannungen an Gehäusen erzeugen.
+
+## 10.8 TT-System
 
 **Aufbau:** Die Anlage hat einen eigenen Erder, der NICHT mit der Trafo-Erde verbunden ist. T = Terra beim Trafo, T = Terra bei der Anlage (zwei getrennte Erder).
 
@@ -90,7 +107,7 @@ Die Buchstaben in der Systembezeichnung haben folgende Bedeutung:
 
 **Anwendung:** Ländliche Gebiete ohne durchgehenden PE, Baustellen, mobile Anlagen, Campingplätze.
 
-## 10.8 IT-System
+## 10.9 IT-System
 
 **Aufbau:** Keine direkte Erdverbindung der Stromquelle (I = Isoliert). Optional hochohmige Erdung oder Isolationsüberwachung.
 
@@ -102,7 +119,9 @@ Die Buchstaben in der Systembezeichnung haben folgende Bedeutung:
 
 **Anwendung:** OP-Säle, Intensivstationen (Patientensicherheit), Bergbau, kritische Industrieanlagen.
 
-## 10.9 Übersichtstabelle
+**Wichtig:** Beim ersten Erdschluss passiert nichts – kein geschlossener Stromkreis zur isolierten Quelle. Der Isolationswächter (IMD) meldet den Fehler, Anlage läuft weiter. Erst beim zweiten Fehler wird's gefährlich.
+
+## 10.10 Übersichtstabelle
 
 | System | PE und N | Erdung Quelle | Erdung Anlage | Schutz | Anwendung |
 |--------|----------|---------------|---------------|--------|-----------|
@@ -112,7 +131,7 @@ Die Buchstaben in der Systembezeichnung haben folgende Bedeutung:
 | TT | Getrennt | Geerdet (T) | Eigener Erder (T) | FI Pflicht! | Baustelle |
 | IT | Getrennt | Isoliert (I) | Eigener Erder | Iso-Wächter | Krankenhaus |
 
-## 10.10 Stern- und Dreieckschaltung
+## 10.11 Stern- und Dreieckschaltung
 
 **Sternschaltung (Y):** Wicklungsenden am Sternpunkt verbunden. U_Wicklung = 230 V, I_Leiter = I_Wicklung.
 

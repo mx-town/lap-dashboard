@@ -116,6 +116,14 @@ SPS-Programmierung und Steuerungskonzepte
 
 **Wichtig:** Eingänge werden nur einmal pro Zyklus gelesen. Änderungen während der Abarbeitung werden erst im nächsten Zyklus erkannt.
 
+### Prozessabbild
+
+Das Prozessabbild ist eine Kopie der Klemmen im Speicher.
+
+**Vorteil:** Konsistente Werte während eines Zyklus.
+
+**Nachteil:** Signale kürzer als Zykluszeit werden "verschlafen".
+
 ## 9.5 Adressierung (Siemens S7)
 
 **Eingänge:** E0.0 bis E0.7 (erstes Byte), E1.0 bis E1.7 (zweites Byte)

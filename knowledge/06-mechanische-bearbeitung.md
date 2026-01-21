@@ -21,7 +21,27 @@ Fertigungsverfahren und Werkzeuge
 
 **Edelstahl:** Mind. 10,5 % Chrom, korrosionsfest. Schwerer zu bearbeiten, langsamer bohren.
 
-## 6.2 Bohren, Senken, Reiben
+## 6.2 Kunststoffarten
+
+### Thermoplaste
+
+Bei Erwärmung formbar, schweißbar, recyclebar.
+
+**Beispiele:** PE, PP, PVC, PA, ABS
+
+### Duroplaste
+
+Nach Aushärtung nicht mehr formbar, hitzebeständig.
+
+**Beispiele:** Epoxid, Phenolharz
+
+### Elastomere
+
+Gummielastisch, reversibel dehnbar.
+
+**Beispiele:** Silikon, NBR, EPDM
+
+## 6.3 Bohren, Senken, Reiben
 
 ### Spiralbohrer nach DIN 338 – Typen N, H, W
 
@@ -57,9 +77,16 @@ Fertigungsverfahren und Werkzeuge
 
 **Vorgehensweise:** Bohrung auf Untermaß bohren (ca. 0,1–0,3 mm kleiner). Reibahle arbeitet auf Endmaß.
 
-## 6.3 Gewindeschneiden
+## 6.4 Gewindeschneiden
 
 **Kernlochformel:** Kernloch-Ø = Gewinde-Ø − Steigung
+
+**Beispiele:**
+- M6: 6-1=5mm
+- M8: 8-1,25=6,8mm
+- M10: 10-1,5=8,5mm
+
+**Wichtig:** Zu kleines Kernloch = Bohrer bricht.
 
 ### Kernlochmaße
 
@@ -88,7 +115,7 @@ Fertigungsverfahren und Werkzeuge
 
 **Rohrgewinde (G/R):** 55° Flankenwinkel. G = zylindrisch, R = konisch.
 
-## 6.4 Passungen
+## 6.5 Passungen
 
 **Definition:** Maßliche Beziehung zwischen Bohrung und Welle.
 
@@ -98,7 +125,7 @@ Fertigungsverfahren und Werkzeuge
 
 **Bezeichnung:** Großbuchstaben = Bohrung (H7), Kleinbuchstaben = Welle (h6).
 
-## 6.5 Schrauben und Verbindungselemente
+## 6.6 Schrauben und Verbindungselemente
 
 **Kaufkriterien:** Gewindeart, Durchmesser, Länge, Kopfform, Antrieb, Festigkeitsklasse, Material.
 
@@ -115,7 +142,7 @@ Fertigungsverfahren und Werkzeuge
 
 **Selbstsichernde Mutter:** Kunststoffring wird verformt und erzeugt Reibung. Nur EINMAL verwenden!
 
-## 6.6 Sägen
+## 6.7 Sägen
 
 ### Handsäge Aufbau
 
@@ -125,7 +152,7 @@ Sägebogen (Bügel), Handgriff, Spannvorrichtung, Sägeblatt.
 
 **Zahnteilung:** Fein (24 Zähne/Zoll) für dünnwandiges Material, grob (14–18 Z/Z) für dickes Material.
 
-## 6.7 Lager
+## 6.8 Lager
 
 ### Wälzlager
 

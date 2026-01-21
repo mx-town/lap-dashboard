@@ -35,7 +35,28 @@ Elektrotechnische Gesetze und Grundlagen
 
 **Eselsbrücke:** "URI" – Spannung = Widerstand × Strom
 
-## 2.3 Kirchhoffsche Gesetze
+## 2.3 Leiterquerschnitt und Spannungsfall
+
+**Formel Spannungsfall:** ΔU = (2 × I × l × ρ) / A
+
+- I = Strom [A]
+- l = einfache Leitungslänge [m]
+- ρ = 0,0178 Ωmm²/m (Kupfer)
+- A = Querschnitt [mm²]
+
+**Zulässiger Spannungsfall:**
+- 3% für Beleuchtung
+- 5% für andere Verbraucher
+
+**Richtwerte Strombelastbarkeit:**
+- 1,5 mm² → 16 A
+- 2,5 mm² → 20 A
+- 4 mm² → 25 A
+- 6 mm² → 32 A
+
+**Verlegeart beachten:** Rohr in Wand weniger belastbar als frei verlegt.
+
+## 2.4 Kirchhoffsche Gesetze
 
 ### 1. Knotenregel
 
@@ -53,7 +74,7 @@ Die Summe aller Spannungen in einer geschlossenen Masche ist null.
 
 **Anwendung:** Berechnung von Spannungen in Reihenschaltungen und Maschen.
 
-## 2.4 Elektrische Leistung
+## 2.5 Elektrische Leistung
 
 **Grundformel:** P = U × I
 
@@ -76,7 +97,7 @@ Die Summe aller Spannungen in einer geschlossenen Masche ist null.
 
 **Leistungsfaktor:** cos φ = P / S (Verhältnis Wirk- zu Scheinleistung)
 
-## 2.5 Elektrische Arbeit
+## 2.6 Elektrische Arbeit
 
 **Formel:** W = P × t
 
@@ -86,7 +107,7 @@ Die Summe aller Spannungen in einer geschlossenen Masche ist null.
 
 **Praxis:** Stromzähler messen in kWh – Grundlage für die Stromrechnung.
 
-## 2.6 Widerstandsgesetz
+## 2.7 Widerstandsgesetz
 
 **Formel:** R = ρ × l / A
 
@@ -98,7 +119,7 @@ Die Summe aller Spannungen in einer geschlossenen Masche ist null.
 - Kupfer = 0,0178 Ω·mm²/m
 - Aluminium = 0,028 Ω·mm²/m
 
-## 2.7 Reihen- und Parallelschaltung
+## 2.8 Reihen- und Parallelschaltung
 
 ### Reihenschaltung
 
@@ -116,7 +137,7 @@ R_ges = R1 + R2 + R3 + ...
 
 **Merke:** Die Parallelschaltung ergibt immer einen kleineren Gesamtwiderstand als der kleinste Einzelwiderstand.
 
-## 2.8 Spannungs- und Stromteiler
+## 2.9 Spannungs- und Stromteiler
 
 ### Spannungsteiler
 

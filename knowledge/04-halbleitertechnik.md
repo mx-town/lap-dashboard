@@ -90,6 +90,10 @@ Keine Polarität.
 
 Wird in Sperrrichtung betrieben. Ab der Zenerspannung fließt Strom bei konstanter Spannung.
 
+**Funktionsprinzip:** Die Zener-Diode arbeitet in Sperrrichtung. Ab der Zenerspannung bricht sie kontrolliert durch und hält die Spannung konstant – reversibel, nicht zerstörend.
+
+**Typische Werte:** 3,3V, 5,1V, 12V.
+
 **Anwendung:** Spannungsstabilisierung.
 
 ### LED – Anode/Kathode erkennen
@@ -118,6 +122,10 @@ Wird in Sperrrichtung betrieben. Ab der Zenerspannung fließt Strom bei konstant
 
 **Funktionsweise:** Eine Spannung am Gate steuert den Stromfluss zwischen Drain und Source. SPANNUNGSGESTEUERT. Nahezu leistungslose Ansteuerung.
 
+**Achtung ESD-Empfindlichkeit:** Die dünne Gate-Oxidschicht kann schon bei 50V zerstört werden. Gate nie offen lassen!
+
+**IGBT:** Kombiniert MOSFET-Eingang mit Bipolar-Ausgang – Standard im Frequenzumrichter.
+
 **Unterschied zum Bipolartransistor:** MOSFET ist spannungsgesteuert (Gate), Bipolar ist stromgesteuert (Basis). MOSFET hat höhere Eingangsimpedanz.
 
 ### Thyristor
@@ -125,6 +133,10 @@ Wird in Sperrrichtung betrieben. Ab der Zenerspannung fließt Strom bei konstant
 **Aufbau:** Vierschicht-Halbleiter (PNPN) mit Anode (A), Kathode (K), Gate (G).
 
 **Funktionsweise:** Sperrt ohne Ansteuerung. Zündimpuls am Gate schaltet dauerhaft leitend. Bleibt leitend bis Strom unter Haltestrom fällt.
+
+**Wichtig:** Nach Zündung bleibt der Thyristor leitend bis der Strom unter den Haltestrom fällt. Bei AC erlischt er bei jedem Nulldurchgang automatisch.
+
+**Zündwinkel:** 0° = volle Leistung, 90° = halbe Leistung, 180° = null.
 
 **Anwendung:** Phasenanschnittsteuerung, Dimmer.
 
@@ -143,6 +155,14 @@ Wird in Sperrrichtung betrieben. Ab der Zenerspannung fließt Strom bei konstant
 **Aufbau:** Vier Dioden in Brückenschaltung (B2U).
 
 **Funktionsweise:** Beide Halbwellen werden gleichgerichtet. Brummfrequenz = doppelte Netzfrequenz (100 Hz).
+
+**Brummfrequenzen:**
+- Einweg = 50Hz
+- Brücke = 100Hz
+- Drehstrom = 300Hz
+- Höhere Frequenz = einfachere Glättung
+
+**Spitzenwert nach Glättung:** U_DC ≈ 230V × 1,41 = 325V (unbelastet).
 
 **Vorteile:** Höherer Wirkungsgrad, geringere Brummspannung.
 
