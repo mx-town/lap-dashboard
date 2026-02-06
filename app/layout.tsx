@@ -27,7 +27,7 @@ export default async function RootLayout({
   const searchIndex = buildSearchIndex(content)
 
   return (
-    <html lang="de" className="scroll-smooth">
+    <html lang="de" className="scroll-smooth dark">
       <body className="font-sans antialiased">
         <MainLayout categories={categories} searchIndex={searchIndex}>
           {children}

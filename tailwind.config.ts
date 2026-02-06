@@ -11,30 +11,30 @@ const config: Config = {
   	extend: {
   		colors: {
   			bg: {
-  				primary: '#ffffff',
-  				secondary: '#f8f9fa',
-  				tertiary: '#f1f3f5',
-  				surface: '#ffffff'
+  				primary: '#0f1117',
+  				secondary: '#1a1d27',
+  				tertiary: '#242736',
+  				surface: '#161922'
   			},
   			accent: {
   				primary: '#3b82f6',
-  				secondary: '#6366f1',
-  				success: '#10b981',
-  				warning: '#f59e0b',
+  				secondary: '#818cf8',
+  				success: '#34d399',
+  				warning: '#fbbf24',
   				DEFAULT: 'hsl(var(--accent))',
   				foreground: 'hsl(var(--accent-foreground))'
   			},
   			text: {
-  				primary: '#1a1a1a',
-  				secondary: '#4a5568',
-  				muted: '#718096',
-  				light: '#a0aec0'
+  				primary: '#e8eaed',
+  				secondary: '#9ca3af',
+  				muted: '#6b7280',
+  				light: '#4b5563'
   			},
   		border: {
   			DEFAULT: 'hsl(var(--border))',
-  			subtle: '#e2e8f0',
-  			panel: '#cbd5e0',
-  			strong: '#a0aec0'
+  			subtle: '#2a2d3a',
+  			panel: '#353849',
+  			strong: '#4a4f63'
   		},
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -138,11 +138,11 @@ const config: Config = {
   			'128': '32rem'
   		},
   		boxShadow: {
-  			sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-  			DEFAULT: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
-  			md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-  			lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-  			xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+  			sm: '0 1px 2px 0 rgba(0, 0, 0, 0.3)',
+  			DEFAULT: '0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3)',
+  			md: '0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3)',
+  			lg: '0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3)',
+  			xl: '0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3)'
   		},
   		borderRadius: {
   			xl: '0.75rem',
