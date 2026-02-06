@@ -54,7 +54,7 @@ function highlightMatch(text: string, query: string): React.ReactNode {
 
   return parts.map((part, i) =>
     regex.test(part) ? (
-      <mark key={i} className="bg-yellow-200 text-text-primary rounded px-0.5">
+      <mark key={i} className="bg-yellow-500/30 text-accent-warning rounded px-0.5">
         {part}
       </mark>
     ) : (
@@ -141,13 +141,13 @@ export function SearchPopup({
     <>
       {/* Overlay */}
       <div
-        className="fixed inset-0 bg-black/10 z-40"
+        className="fixed inset-0 bg-black/40 z-40"
         onClick={onClose}
       />
 
       {/* Popup */}
       <div className="fixed top-16 left-1/2 transform -translate-x-1/2 w-full max-w-lg z-50 px-4">
-        <div className="bg-white rounded-lg shadow-lg border border-border-subtle overflow-hidden">
+        <div className="bg-bg-surface rounded-lg shadow-lg border border-border-subtle overflow-hidden">
           {/* Search Input */}
           <div className="relative p-3 border-b border-border-subtle">
             <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-text-muted w-4 h-4 pointer-events-none" />

@@ -60,9 +60,9 @@ export function MainLayout({ children, categories, searchIndex }: MainLayoutProp
   }, [])
 
   return (
-    <div className="h-screen w-full flex flex-col bg-white overflow-hidden">
+    <div className="h-screen w-full flex flex-col bg-bg-primary overflow-hidden">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 lg:static pl-4 lg:pl-0 h-11 w-full lg:flex-row flex-row-reverse flex border-b border-border-subtle bg-white flex-shrink-0">
+      <header className="fixed top-0 left-0 right-0 z-50 lg:static pl-4 lg:pl-0 h-11 w-full lg:flex-row flex-row-reverse flex border-b border-border-subtle bg-bg-primary flex-shrink-0">
         <div className="w-72 flex-1 lg:flex-[unset] lg:flex-shrink-0 h-full flex items-center lg:px-5 border-r border-border-subtle">
           <Link href="/" className="text-sm font-medium text-text-primary hover:text-accent-primary transition-colors">
             Mechatronik Lexikon
@@ -104,7 +104,7 @@ export function MainLayout({ children, categories, searchIndex }: MainLayoutProp
       {/* Body */}
       <div className="flex flex-1 overflow-hidden pt-11 lg:pt-0">
         {/* Desktop sidebar */}
-        <aside className="hidden lg:block w-72 h-full overflow-y-auto scrollbar-hide border-r border-border-subtle bg-white flex-shrink-0">
+        <aside className="hidden lg:block w-72 h-full overflow-y-auto scrollbar-hide border-r border-border-subtle bg-bg-primary flex-shrink-0">
           <div className="p-4">
             <CategoryTree categories={categories} />
           </div>
@@ -114,7 +114,7 @@ export function MainLayout({ children, categories, searchIndex }: MainLayoutProp
         <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
           <SheetContent 
             side="left" 
-            className="w-72 p-0 bg-white border-r border-border-subtle lg:hidden flex flex-col h-full"
+            className="w-72 p-0 bg-bg-primary border-r border-border-subtle lg:hidden flex flex-col h-full"
           >
             <SheetHeader className="px-4 py-3 border-b border-border-subtle flex-shrink-0">
               <SheetTitle className="text-xs font-medium text-text-muted uppercase tracking-wide text-left">
