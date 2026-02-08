@@ -91,6 +91,14 @@ export function MainLayout({ children, categories, searchIndex }: MainLayoutProp
             />
           </div>
 
+          <div className="hidden lg:flex items-center gap-1.5 ml-auto text-xs text-text-muted flex-shrink-0">
+            <span>Niklas Martinek</span>
+            <span className="text-border-strong">&middot;</span>
+            <span>Claude</span>
+            <span className="text-border-strong">&middot;</span>
+            <span>Vercel</span>
+          </div>
+
           <button
             onClick={() => setSidebarOpen(true)}
             className="lg:hidden ml-auto p-2 text-text-muted hover:text-text-primary rounded transition-colors flex-shrink-0"
