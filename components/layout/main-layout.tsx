@@ -92,7 +92,7 @@ export function MainLayout({ children, categories, searchIndex }: MainLayoutProp
           </div>
 
           <div className="hidden lg:flex items-center gap-1.5 ml-auto text-xs text-text-muted flex-shrink-0">
-            <span>Niklas Martinek</span>
+            <span>Martinek Niklas</span>
           </div>
 
           <button
@@ -125,7 +125,7 @@ export function MainLayout({ children, categories, searchIndex }: MainLayoutProp
                 <SheetTitle className="text-xs font-medium text-text-muted uppercase tracking-wide text-left">
                   Inhalt
                 </SheetTitle>
-                <span className="text-[10px] text-text-light">Niklas Martinek</span>
+                <span className="text-[10px] text-text-light">Martinek Niklas</span>
               </div>
             </SheetHeader>
             <div 
