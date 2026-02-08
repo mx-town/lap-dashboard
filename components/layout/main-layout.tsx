@@ -121,12 +121,9 @@ export function MainLayout({ children, categories, searchIndex }: MainLayoutProp
             className="w-72 p-0 bg-bg-primary border-r border-border-subtle lg:hidden flex flex-col h-full"
           >
             <SheetHeader className="px-4 py-3 border-b border-border-subtle flex-shrink-0">
-              <div className="flex items-center justify-between">
-                <SheetTitle className="text-xs font-medium text-text-muted uppercase tracking-wide text-left">
-                  Inhalt
-                </SheetTitle>
-                <span className="text-[10px] text-text-light">Martinek Niklas</span>
-              </div>
+              <SheetTitle className="text-xs font-medium text-text-muted uppercase tracking-wide text-left">
+                Inhalt <span className="text-[10px] text-text-light font-normal normal-case tracking-normal ml-2">Martinek Niklas</span>
+              </SheetTitle>
             </SheetHeader>
             <div 
               className="flex-1 overflow-y-auto px-4 py-4 min-h-0"
