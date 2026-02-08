@@ -92,11 +92,7 @@ export function MainLayout({ children, categories, searchIndex }: MainLayoutProp
           </div>
 
           <div className="hidden lg:flex items-center gap-1.5 ml-auto text-xs text-text-muted flex-shrink-0">
-            <span>Niklas Martinek</span>
-            <span className="text-border-strong">&middot;</span>
-            <span>Claude</span>
-            <span className="text-border-strong">&middot;</span>
-            <span>Vercel</span>
+            <span>Martinek Niklas</span>
           </div>
 
           <button
@@ -125,9 +121,12 @@ export function MainLayout({ children, categories, searchIndex }: MainLayoutProp
             className="w-72 p-0 bg-bg-primary border-r border-border-subtle lg:hidden flex flex-col h-full"
           >
             <SheetHeader className="px-4 py-3 border-b border-border-subtle flex-shrink-0">
-              <SheetTitle className="text-xs font-medium text-text-muted uppercase tracking-wide text-left">
-                Inhalt
-              </SheetTitle>
+              <div className="flex items-center justify-between">
+                <SheetTitle className="text-xs font-medium text-text-muted uppercase tracking-wide text-left">
+                  Inhalt
+                </SheetTitle>
+                <span className="text-[10px] text-text-light">Martinek Niklas</span>
+              </div>
             </SheetHeader>
             <div 
               className="flex-1 overflow-y-auto px-4 py-4 min-h-0"
