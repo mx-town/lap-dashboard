@@ -1,97 +1,90 @@
-# Mechatronik Lexikon - LAP Fachgespräch
+# 📖 LAP Dashboard — Mechatronics Lexicon
 
-Eine interaktive Next.js Website zur Vorbereitung auf das Fachgespräch der Lehrabschlussprüfung (LAP) für Mechatroniker.
+[![Live Demo](https://img.shields.io/badge/Live-lap--dashboard.vercel.app-000?logo=vercel)](https://lap-dashboard.vercel.app)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-blue?logo=typescript&logoColor=white)](https://typescriptlang.org)
+
+A structured, searchable lexicon of electrical engineering and mechatronics terms — built for preparing for the Austrian final apprenticeship exam (Lehrabschlussprüfung / LAP).
+
+**🔗 [Browse the lexicon → lap-dashboard.vercel.app](https://lap-dashboard.vercel.app)**
+
+---
 
 ## Features
 
-- **10 Hauptkategorien** mit detaillierten Begriffen
-- **Fuzzy-Search** mit Fuse.js zum schnellen Finden
-- **Animationen** mit Framer Motion
-- **Responsive Design** für alle Geräte
-- **Dunkles Design** mit lila/blauen Gradienten
+- **10 categories** with detailed term definitions and explanations
+- **Fuzzy search** powered by Fuse.js — find terms instantly
+- **Responsive design** — works on desktop, tablet, and mobile
+- **Dark theme** with purple/blue gradient aesthetics
+- **Animated UI** — smooth page transitions with Framer Motion
 
-## Hauptkategorien
+---
 
-| Nr. | Kategorie | Bearbeitet von |
-|-----|-----------|----------------|
-| 1 | Schutzkonzepte | Kilian |
-| 2 | ET Gesetze | Josh |
-| 3 | Schaltkasten | Noel |
-| 4 | Halbleitertechnik | Niklas M |
-| 5 | Kabel/Leitungen/Stecker | Celine |
-| 6 | Mechanische Bearbeitung | Wenger |
-| 7 | Mechanisches Messen/Prüfen | Wenger |
-| 8 | Pneumatik | Lukas |
-| 9 | Regelungs-/Steuerungstechnik/SPS | Andreas |
-| 10 | Netzsysteme | Offen |
+## Categories
 
-## Installation
+| # | Category |
+|---|----------|
+| 1 | Safety concepts |
+| 2 | Electrical engineering laws |
+| 3 | Switchgear cabinets |
+| 4 | Semiconductor technology |
+| 5 | Cables, wires & connectors |
+| 6 | Mechanical machining |
+| 7 | Mechanical measurement & testing |
+| 8 | Pneumatics |
+| 9 | Control & automation / PLC |
+| 10 | Power grid systems |
 
-```bash
-# Dependencies installieren
-bun install
-
-# Entwicklungsserver starten
-bun run dev
-```
-
-Dann öffne [http://localhost:3000](http://localhost:3000) im Browser.
-
-**Note:** This project uses [Bun](https://bun.sh) as the package manager. If you don't have Bun installed, you can install it with:
-```bash
-curl -fsSL https://bun.sh/install | bash
-```
-
-## Projekt Struktur
-
-```
-mechatronik-lexikon/
-├── app/
-│   ├── layout.tsx      # Root Layout
-│   ├── page.tsx        # Hauptseite
-│   └── globals.css     # Global Styles
-├── components/ui/      # UI Komponenten
-├── data/
-│   └── terms.ts        # Alle Begriffe und Kategorien
-├── lib/
-│   └── utils.ts        # Hilfsfunktionen
-└── public/images/      # Bilder
-```
-
-## Begriffe hinzufügen
-
-Bearbeite `data/terms.ts`:
-
-```typescript
-{
-  id: "mein-begriff",
-  title: "Mein Begriff",
-  image: "/images/mein-bild.png",
-  description: "Ausführliche Beschreibung...",
-  example: "Praktische Beispiele",
-  category: "schutzkonzepte", // Kategorie-ID
-}
-```
-
-## Deployment
-
-```bash
-# Für statisches Hosting (GitHub Pages, Netlify)
-bun run build
-```
-
-Die Dateien landen im `out/` Ordner.
+---
 
 ## Tech Stack
 
-- Next.js 14
-- React 18
-- TypeScript
-- Tailwind CSS
-- Framer Motion
-- Fuse.js
-- Radix UI
+| Technology | Purpose |
+|------------|---------|
+| Next.js 14 | App Router, static export |
+| TypeScript | Type safety |
+| Tailwind CSS | Styling |
+| Framer Motion | Animations |
+| Fuse.js | Fuzzy search |
+| Radix UI | Accessible components |
 
-## Lizenz
+---
 
-Erstellt für die LAP-Vorbereitung 2025.
+## Getting Started
+
+```bash
+# Install dependencies
+bun install
+
+# Start development server
+bun run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Adding Terms
+
+Edit the terms data file and add entries following this structure:
+
+```typescript
+{
+  id: "my-term",
+  title: "My Term",
+  image: "/images/my-image.png",
+  description: "Detailed explanation...",
+  example: "Practical examples",
+  category: "category-id",
+}
+```
+
+---
+
+## Related
+
+- **[LAP Quiz](https://github.com/mx-town/lap-quiz)** — Interactive quiz app with exam simulation, blitz rounds, and more
+
+---
+
+## License
+
+Built for LAP exam preparation in Austria.
